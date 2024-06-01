@@ -6,7 +6,7 @@ const { logErrors, errorHandler, boomErrorHandler} = require('./middlewares/erro
 
 
 const app = expres();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(expres.json())
 routeApi(app);
