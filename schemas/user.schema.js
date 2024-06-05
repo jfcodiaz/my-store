@@ -8,13 +8,13 @@ const role = Joi.string().min(5);
 const createUserSchema = Joi.object({
   email: email.required(),
   password: password.required(),
-  //role: role.required()
+  role: role.required()
 });
 
 const updateUserSchema = Joi.object({
   email,
-  password
-  //role
+  password,
+  role
 });
 
 const getUserSchema = Joi.object({

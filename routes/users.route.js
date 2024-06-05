@@ -65,7 +65,7 @@ router.delete('/:id',
       const result = await service.delete(id);
       res.json(result);
     } catch (error) {
-     next(error)
+     next(error);
     }
   }
 );
