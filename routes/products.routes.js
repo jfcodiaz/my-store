@@ -33,7 +33,6 @@ router.post('/',
   async (req, res, next) => {
     try {
       const body = req.body;
-      console.log(body)
       const newProduct = await service.create(body);
       res.status(201).json(newProduct)
     } catch (error) {
@@ -63,7 +62,7 @@ router.delete('/:id',
     try {
       const { id } = req.params;
       await service.delete(id);
-      res.status(201).json(id);
+      res.status(204).json(null);
     } catch (error) {
       next(error)
     }
