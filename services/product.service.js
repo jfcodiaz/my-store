@@ -1,12 +1,9 @@
-const { faker } = require('@faker-js/faker');
-const boom = require('@hapi/boom')
+const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
-const { options } = require('joi');
 
 class ProductsService {
   constructor() {
   }
-
 
   async find() {
     return models.Product.findAll();
