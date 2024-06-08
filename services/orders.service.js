@@ -2,8 +2,10 @@
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
 const { CustomerService } = require('./customer.service');
+const ProductService = require('./product.service');
 
-customerService = new CustomerService();
+const customerService = new CustomerService();
+const productService = new ProductService();
 
 class OrderService {
   async create(data) {
@@ -14,13 +16,22 @@ class OrderService {
 
   findAll(options) {
     return models.Order.findAll({
-      include: ['customer']
+      include: ['customer', 'items']
     });
   }
 
   async findOne(id) {
     const entity = await models.Order.findByPk(id, {
-      include: ['customer']
+      include: [
+        { model: models.Customer, as: 'customer' },
+        {
+          model: models.OrderItem,
+          as: 'items',
+          include: [
+            { model: models.Product, as: 'product' }
+          ]
+        }
+      ]
     });
     if(!entity) throw boom.notFound('Order Not Found');
 
@@ -37,6 +48,28 @@ class OrderService {
   async delete(id) {
     const entity = await this.findOne(id);
     return entity.destroy()
+  }
+
+  async addItem(orderId, data) {
+    const order = await this.findOne(orderId);
+    const product = await productService.findOne(data.productId);
+
+    return models.OrderItem.create({
+      orderId,
+      ...data
+    });
+  }
+
+  async removeItem(orderId, itemId) {
+    const item = await models.OrderItem.findOne({
+      where: {
+        orderId,
+        id: itemId
+      }
+    });
+    if(!item) throw boom.notFound('Item not found');
+
+    return item.destroy();
   }
 }
 

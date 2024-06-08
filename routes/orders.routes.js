@@ -4,6 +4,7 @@ const router = express.Router();
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getOrderSchema, createOrderSchema } = require('./../schemas/order.schema');
 const {OrderService} = require('./../services/orders.service');
+const { addItemSchema } = require('../schemas/order-item.schema');
 
 const service = new OrderService();
 
@@ -36,6 +37,34 @@ router.get('/:id',
     }
   });
 
+router.post('/:orderId/items',
+  validatorHandler(addItemSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      res.status(201).json(
+        await service.addItem(req.params.orderId, req.body)
+      );
+    } catch (error) {
+      next(error);
+    }
+
+  }
+)
+
+router.delete('/:orderId/items/:itemId',
+  async(req, res, next) => {
+    try {
+      await service.removeItem(
+        req.params.orderId,
+        req.params.itemId
+      );
+      res.status(204).json();
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 router.delete('/:id',
   validatorHandler(getOrderSchema),
   async (req, res, next) => {
@@ -45,5 +74,7 @@ router.delete('/:id',
       next(error);
     }
   });
+
+
 
 module.exports = router;
