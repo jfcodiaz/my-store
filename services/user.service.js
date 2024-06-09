@@ -46,6 +46,18 @@ class UserService {
     await user.destroy();
     return { id };
   }
+
+  async findByEmail(email, options= {scope:'defaultScope'}) {
+    const user =  await models.User.scope(options.scope).findOne({
+      ...options,
+      where: {
+        email
+      }
+    })
+
+    console.log({user});
+    return user;
+  }
 }
 
 module.exports = UserService;

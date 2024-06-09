@@ -12,7 +12,8 @@ const config = {
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
   dbUrl,
-  encryptSalt: parseInt(process.env.ENCRYPT_SALT, 10)
+  encryptSalt: parseInt(process.env.ENCRYPT_SALT, 10),
+  jwtSecret: process.env.JWT_SECRET
 }
 
 module.exports = { config }
