@@ -11,7 +11,8 @@ const config = {
   dbHost: process.env.DB_HOST,
   dbName: process.env.DB_NAME,
   dbPort: process.env.DB_PORT,
-  dbUrl
+  dbUrl,
+  encryptSalt: parseInt(process.env.ENCRYPT_SALT, 10)
 }
 
 module.exports = { config }

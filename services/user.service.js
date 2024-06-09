@@ -1,13 +1,25 @@
 const boom = require('@hapi/boom');
-
+const bcrypt = require('bcrypt');
+const { config } = require('./../config/config');
 const { models } = require('./../libs/sequelize');
 
 class UserService {
   constructor() {}
 
   async create(data) {
-    const newUser = await models.User.create(data);
-    return newUser;
+    console.log({
+      data, config,
+      salt: config.encryptSalt
+    })
+    const hash = await bcrypt.hash(data.password, config.encryptSalt);
+    const newUser = await models.User.create({
+      ...data,
+      password: hash
+    });
+
+
+
+    return this.findOne(newUser.id);
   }
 
   async find() {
