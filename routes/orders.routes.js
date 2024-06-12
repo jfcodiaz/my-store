@@ -3,12 +3,14 @@ const express = require('express');
 const router = express.Router();
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getOrderSchema, createOrderSchema } = require('./../schemas/order.schema');
+const passport = require('passport');
 const {OrderService} = require('./../services/orders.service');
 const { addItemSchema } = require('../schemas/order-item.schema');
 
 const service = new OrderService();
 
 router.post('/',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(createOrderSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -19,6 +21,7 @@ router.post('/',
 });
 
 router.get('/',
+  passport.authenticate('jwt', {session: false}),
   async (req, res, next) => {
     try {
       res.json(await service.findAll());
@@ -28,6 +31,7 @@ router.get('/',
 });
 
 router.get('/:id',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(getOrderSchema),
   async (req, res, next) => {
     try {
@@ -38,6 +42,7 @@ router.get('/:id',
   });
 
 router.post('/:orderId/items',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(addItemSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -52,6 +57,7 @@ router.post('/:orderId/items',
 )
 
 router.delete('/:orderId/items/:itemId',
+  passport.authenticate('jwt', {session: false}),
   async(req, res, next) => {
     try {
       await service.removeItem(
@@ -66,6 +72,7 @@ router.delete('/:orderId/items/:itemId',
 );
 
 router.delete('/:id',
+  passport.authenticate('jwt', {session: false}),
   validatorHandler(getOrderSchema),
   async (req, res, next) => {
     try {
