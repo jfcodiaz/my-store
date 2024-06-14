@@ -18,6 +18,11 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
+  recoveryToken: {
+    field: 'recovery_token',
+    allowNull: true,
+    type: DataTypes.STRING
+  },
   role: {
     allowNull: false,
     type: DataTypes.STRING,
@@ -46,7 +51,7 @@ class User extends Model {
       modelName: 'User',
       timestamps: false,
       defaultScope: {
-        attributes: { exclude: ['password'] },
+        attributes: { exclude: ['password', 'recoveryToken'] },
       },
       scopes: {
         withPassword: {

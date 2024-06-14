@@ -26,8 +26,8 @@ class UserService {
     return models.User.findAll();
   }
 
-  async findOne(id) {
-    const user = await models.User.findByPk(id);
+  async findOne(id, options= {scope:'defaultScope'}) {
+    const user = await models.User.scope(options.scope).findByPk(id, options);
     if (!user) {
       throw boom.notFound('user not found');
     }

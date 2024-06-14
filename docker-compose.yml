@@ -39,6 +39,12 @@ services:
     ports:
       - 8080:80
 
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
 volumes:
   mysql_data:
   postgres_data:

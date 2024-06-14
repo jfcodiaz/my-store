@@ -13,7 +13,11 @@ const config = {
   dbPort: process.env.DB_PORT,
   dbUrl,
   encryptSalt: parseInt(process.env.ENCRYPT_SALT, 10),
-  jwtSecret: process.env.JWT_SECRET
+  jwtSecret: process.env.JWT_SECRET,
+  smtpEmail: process.env.SMTP_EMAIL,
+  smtpPassword: process.env.SMTP_PASSWORD,
+  smtpPort: process.env.SMTP_PORT,
+  smtpSecure: process.env.SMTP_SECURE == 'true'
 }
 
 module.exports = { config }
