@@ -38,6 +38,30 @@ class OrderService {
     return entity;
   }
 
+  findByUser(userId) {
+    return models.Order.findAll({
+      where: {
+        '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        },
+        {
+          model: models.OrderItem,
+          as: 'items',
+          include: [
+            { model: models.Product, as: 'product' }
+          ]
+        }
+      ]
+    });
+
+  }
+
+
+
   async update(id, data) {
     const entity = await this.findOne(id);
     entity.update(data);
