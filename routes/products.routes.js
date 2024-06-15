@@ -3,6 +3,7 @@ const express = require('express');
 const ProductsService = require('./../services/product.service');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { getProductSchema, createProductSchema, updateProductSchema } = require('../schemas/product.schema');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const passport = require('passport');
 const router = express.Router();
 
@@ -36,6 +37,7 @@ router.get('/:id',
 router.post('/',
   passport.authenticate('jwt', {session: false}),
   validatorHandler(createProductSchema, 'body'),
+  checkRoles('admin'),
   async (req, res, next) => {
     try {
       const body = req.body;

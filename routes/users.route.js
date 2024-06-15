@@ -2,6 +2,7 @@ const expres = require('express');
 const UserService = require('./../services/user.service');
 const validatorHandler = require('./../middlewares/validator.handler');
 const { updateUserSchema, createUserSchema, getUserSchema } = require('./../schemas/user.schema');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const passport = require('passport');
 
 router = expres.Router();
@@ -33,6 +34,7 @@ router.get('/:id',
 });
 
 router.post('/',
+  checkRoles('admin'),
   passport.authenticate('jwt', {session: false}),
   validatorHandler(createUserSchema, 'body'),
   async(req, res, next)=> {
