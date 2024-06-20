@@ -11,7 +11,10 @@
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo",
-    "migrations:delete": "sequelize-cli db:migrate:undo:all"
+    "migrations:delete": "sequelize-cli db:migrate:undo:all",
+    "e2e": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --runInBand",
+    "e2e:ci": "NODE_ENV=ci jest --config ./jest-e2e.json --verbose --forceExit --runInBand",
+    "e2e:coverage": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --coverage"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +23,10 @@
     "@eslint/js": "^9.5.0",
     "eslint": "^9.5.0",
     "globals": "^15.6.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.2",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
@@ -29,7 +34,6 @@
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "eslint-config-standard": "^17.1.0",
     "eslint-plugin-jest": "^28.6.0",
     "express": "^4.19.2",
     "joi": "^17.13.1",
