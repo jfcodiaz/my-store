@@ -67,7 +67,7 @@ class AuthService {
       });
       user = await userService.findOne(payload.sub);
       return this.singToken(user);
-    } catch(error) {
+    } catch {
       throw boom.unauthorized();
     }
   }

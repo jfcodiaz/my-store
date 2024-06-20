@@ -47,11 +47,11 @@ module.exports = {
       onDelete: 'SET NULL'
     }
   },
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface) {
     queryInterface.createTable(this.ORDER_ITEM_TABLE, this.orderItemSchema);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface) {
     queryInterface.dropTable(this.ORDER_ITEM_TABLE);
   }
 };

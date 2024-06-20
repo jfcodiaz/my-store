@@ -1,7 +1,7 @@
 'use strict';
 
 const { USER_TABLE } = require('./../models/user.model');
-const { DataTypes, Sequelize } = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface) {
     await queryInterface.dropTable(USER_TABLE);
   }
 };

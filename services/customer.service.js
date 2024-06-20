@@ -19,7 +19,6 @@ class CustomerService {
       include: ['user']
     })
     return await this.findOne(newCustomer.id);
-    return newCustomer;
   }
 
   async findAll() {

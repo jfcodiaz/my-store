@@ -34,11 +34,11 @@ module.exports = {
       defaultValue: Sequelize.NOW
     }
   },
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface) {
     await queryInterface.createTable(this.CATEGORY_TABLE, this.categorySchema);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface) {
     await queryInterface.dropTable(this.CATEGORY_TABLE);
   }
 };

@@ -3,7 +3,7 @@ const validatorHandler = require('../middlewares/validator.handler');
 const { createCategorySchema, updateCategorySchema, getCategorySchema } = require('../schemas/cateory.schema');
 const CategoryService = require('./../services/category.service');
 const { checkRoles } = require('./../middlewares/auth.handler');
-router = express.Router();
+const router = express.Router();
 const service = new CategoryService();
 const passport = require('passport');
 

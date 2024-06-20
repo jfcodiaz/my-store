@@ -1,20 +1,12 @@
-
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
-const { CustomerService } = require('./customer.service');
-const ProductService = require('./product.service');
-
-const customerService = new CustomerService();
-const productService = new ProductService();
 
 class OrderService {
   async create(data) {
-    const {customerId} = data;
-    const custumer = await customerService.findOne(customerId);
     return models.Order.create(data);
   }
 
-  findAll(options) {
+  findAll() {
     return models.Order.findAll({
       include: ['customer', 'items']
     });
@@ -75,9 +67,6 @@ class OrderService {
   }
 
   async addItem(orderId, data) {
-    const order = await this.findOne(orderId);
-    const product = await productService.findOne(data.productId);
-
     return models.OrderItem.create({
       orderId,
       ...data

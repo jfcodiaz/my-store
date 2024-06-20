@@ -35,11 +35,11 @@ module.exports = {
       defaultValue: Sequelize.NOW
     }
   },
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface) {
     queryInterface.createTable(this.ORDER_TABLE, this.orderSchema);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface) {
     queryInterface.dropTable(this.ORDER_TABLE);
   }
 };

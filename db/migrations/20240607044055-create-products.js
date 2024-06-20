@@ -1,6 +1,5 @@
 'use strict';
 
-const { allow } = require('joi');
 const { DataTypes, Sequelize } = require('sequelize');
 const { CATEGORY_TABLE } = require('../models/category.model');
 
@@ -51,11 +50,11 @@ module.exports = {
     }
   },
 
-  async up (queryInterface, sequelize) {
+  async up (queryInterface) {
     queryInterface.createTable(this.PRODUCT_TABLE, this.productSchema)
   },
 
-  async down (queryInterface, Sequelize) {
+  async down (queryInterface) {
     queryInterface.dropTable(this.PRODUCT_TABLE)
 
   }

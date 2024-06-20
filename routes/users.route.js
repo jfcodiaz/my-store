@@ -5,7 +5,7 @@ const { updateUserSchema, createUserSchema, getUserSchema } = require('./../sche
 const { checkRoles } = require('./../middlewares/auth.handler');
 const passport = require('passport');
 
-router = expres.Router();
+const router = expres.Router();
 
 const service = new UserService();
 

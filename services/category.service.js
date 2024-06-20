@@ -16,10 +16,14 @@ class CategoryService {
   }
 
   findOne(id) {
-    return new Promise(async (resolve, reject) => {
-      const model = await models.Category.findByPk(id);
-      if(!model) reject(boom.notFound('category not found'));
-      resolve(model);
+    return new Promise((resolve, reject) => {
+      models.Category.findByPk(id)
+        .then(model => {
+          if(!model) {
+            reject(boom.notFound('category not found'));
+          }
+          resolve(model);
+        });
     });
   }
 

@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model } = require("sequelize");
 const { ORDER_TABLE, orderSchema: orderSchemaV1} = require('./../migrations/20240607205530-craete-orders');
 
 
