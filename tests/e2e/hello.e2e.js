@@ -1,5 +1,8 @@
+const { config } = require("../../config/config");
+
 describe('Test Fake', () => {
-  test('true is true', () => {
-    expect(true).toEqual(true);
+  test('port in test is 3001', () => {
+    console.log();
+    expect(config.port).toEqual('3001');
   });
 })

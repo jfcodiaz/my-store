@@ -1,8 +1,20 @@
-require('dotenv').config();
+const dontenv = require('dotenv');
+const fs = require('fs');
+
+const options = {};
+const env = process.env.NODE_ENV || 'dev';
+const envFile = `.env.${env}`;
+
+if(fs.existsSync(`${envFile}`)){
+  options.path = envFile;
+}
+
+dontenv.config(options);
 
 const dbUrl = process.env.DATABASE_URL || `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 
 const config = {
+  appPort: process.env.PORT || 3000,
   env: process.env.NODE_ENV || 'dev',
   isProd: process.env.NODE_ENV === 'production',
   port: process.env.PORT || 3000,
