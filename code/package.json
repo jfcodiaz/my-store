@@ -14,7 +14,10 @@
     "migrations:delete": "sequelize-cli db:migrate:undo:all",
     "e2e": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --runInBand",
     "e2e:ci": "NODE_ENV=ci jest --config ./jest-e2e.json --verbose --forceExit --runInBand",
-    "e2e:coverage": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --coverage"
+    "e2e:coverage": "NODE_ENV=e2e jest --config ./jest-e2e.json --verbose --forceExit --coverage",
+    "seed:all": "sequelize-cli db:seed:all",
+    "seed:undo": "sequelize-cli db:seed:undo:all",
+    "sequelize": "sequelize-cli"
   },
   "keywords": [],
   "author": "",

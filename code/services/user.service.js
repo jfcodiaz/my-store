@@ -7,17 +7,11 @@ class UserService {
   constructor() {}
 
   async create(data) {
-    console.log({
-      data, config,
-      salt: config.encryptSalt
-    })
     const hash = await bcrypt.hash(data.password, config.encryptSalt);
     const newUser = await models.User.create({
       ...data,
       password: hash
     });
-
-
 
     return this.findOne(newUser.id);
   }
@@ -54,7 +48,6 @@ class UserService {
       }
     })
 
-    console.log({user});
     return user;
   }
 }
