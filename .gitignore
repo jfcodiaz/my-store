@@ -1,3 +1,5 @@
 node_modules
 .env
 .env.e2e
+code/tests/coverage/*
+!code/tests/coverage/.gitkeep

@@ -3,5 +3,10 @@
   "rootDir": "./tests/e2e",
   "testEnvironment": "node",
   "testRegex": ".e2e.js$",
-  "coverageDirectory": "coverage_e2e"
+  "coverageDirectory": "../coverage/e2e",
+  "coverageReporters": ["json", "lcov", "text", "clover", "html"],
+  "coveragePathIgnorePatterns": [
+    "./db/migrations",
+    "./db/seeders"
+  ]
 }

@@ -18,7 +18,7 @@ class AuthService {
       throw boom.unauthorized();
     }
 
-    return user;
+    return await userService.findByEmail(email);;
   }
 
   singToken(user) {

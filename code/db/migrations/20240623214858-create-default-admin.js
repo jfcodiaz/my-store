@@ -8,7 +8,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     await userService.create({
       email: 'admin@local.com',
-      password: 'root'
+      password: process.env.INITIAL_PASS
     });
   },
 
