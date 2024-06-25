@@ -1,8 +1,9 @@
-const { config } = require("../../config/config");
+const { e2e } = require('./../utils/e2e');
 
-describe('Test Fake', () => {
-  test('port in test is 3001', () => {
-    console.log(config.dbUrl);
-    expect(config.port).toEqual('3001');
+e2e('Test for home', (suite) => {
+  test('GET /', async () => {
+    const response = await suite.api.get('/');
+    expect(response.text).toMatch(/Hola/);
+    expect(response.statusCode).toEqual(200)
   });
-})
+});

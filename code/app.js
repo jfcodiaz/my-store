@@ -5,10 +5,15 @@ require('./utils/auth');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler} = require('./middlewares/error.handler');
 const { config } = require("./config/config");
 
+let app;
+let server;
+
+const getApp = () => app;
+const getServer = () => server;
+
 const createApp = () => {
-  const app = express();
+  app = express();
   const port = config.port;
-  console.log(port);
   app.use(express.json())
   routeApi(app);
   app.get('/', (req, res) => {
@@ -18,9 +23,13 @@ const createApp = () => {
   app.use(ormErrorHandler);
   app.use(boomErrorHandler);
   app.use(errorHandler);
-  app.listen(port, () => {
+  server = app.listen(port, () => {
     console.log(`Server on ${port}`)
   })
 }
 
-module.exports = createApp;
+module.exports = {
+  createApp,
+  getApp,
+  getServer
+}
