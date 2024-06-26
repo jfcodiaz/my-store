@@ -1,13 +1,13 @@
-const { config } = require("./../../config/config");
 const request = require('supertest');
 const { createApp, getApp, getServer }= require('./../../app');
 const { upSeed, downSeed } = require('../utils/umzug');
+const logger = require("../../libs/logger");
 
 const e2e = async ({
   title = 'Suite',
   tests = () => {},
-  beforeAll: userBeforeAll = (suite) => {},
-  afterAll: userAfterAll = (suite) => {}
+  beforeAll: userBeforeAll = (_suite) => {},
+  afterAll: userAfterAll = (_suite) => {}
 } = {}) => {
   describe(title, () => {
     let suite = {
@@ -17,14 +17,14 @@ const e2e = async ({
 
     beforeAll(async () => {
       try {
-        console.log('Starting app and running migrations...');
+        logger.info('Starting app and running migrations...');
         await createApp();
         await upSeed();
         suite.api = request(getApp());
         await userBeforeAll(suite);
-        console.log('Setup complete.');
+        logger.info('Setup complete.');
       } catch (error) {
-        console.error('Error in beforeAll:', error);
+        logger.error('Error in beforeAll:', error);
         throw error;
       }
     });
@@ -33,13 +33,13 @@ const e2e = async ({
 
     afterAll(async () => {
       try {
-        console.log('Cleaning up...');
+        logger.info('Cleaning up...');
         await userAfterAll(suite);
         await downSeed();
         getServer().close();
-        console.log('Cleanup complete.');
+        logger.info('Cleanup complete.');
       } catch (error) {
-        console.error('Error in afterAll:', error);
+        logger.error('Error in afterAll:', error);
         throw error;
       }
     });

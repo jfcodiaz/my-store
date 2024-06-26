@@ -4,6 +4,7 @@ require('./utils/auth');
 
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler} = require('./middlewares/error.handler');
 const { config } = require("./config/config");
+const logger = require("./libs/logger");
 
 let app;
 let server;
@@ -24,7 +25,7 @@ const createApp = () => {
   app.use(boomErrorHandler);
   app.use(errorHandler);
   server = app.listen(port, () => {
-    console.log(`Server on ${port}`)
+    logger.info(`Server on ${port}`)
   })
 }
 

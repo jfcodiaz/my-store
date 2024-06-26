@@ -2,10 +2,11 @@ const { Sequelize } = require('sequelize');
 
 const { config } = require('../config/config');
 const setupModels = require('./models');
+const logger = require('../libs/logger');
 
 const options = {
   dialect: 'postgres',
-  logging: config.env === 'dev' ? console.log : false,
+  logging: config.env === 'dev' ? logger.info : false,
 }
 
 if (config.isProd) {

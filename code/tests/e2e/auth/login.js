@@ -3,7 +3,7 @@ const { decodeToken } = require("../../../services/jwt/decode-token");
 module.exports = (suite) => {
   test('POST /login', async () => {
     const { user } = suite;
-    const { text, body, statusCode } = await suite.api.post('/api/v1/auth/login').send({
+    const { body, statusCode } = await suite.api.post('/api/v1/auth/login').send({
       "email": user.email,
       "password": process.env.INITIAL_PASS
     });
