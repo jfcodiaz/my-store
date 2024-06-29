@@ -50,6 +50,12 @@ class UserService {
 
     return user;
   }
+
+  findFirstUserWithRole(role) {
+    return models.User.findOne({
+      where: { role }
+    });
+  }
 }
 
 module.exports = UserService;

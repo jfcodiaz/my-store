@@ -1,32 +1,44 @@
 const request = require('supertest');
-const { createApp, getApp, getServer }= require('./../../app');
+const { createApp, getApp, getServer } = require('./../../app');
 const { upSeed, downSeed } = require('../utils/umzug');
 const logger = require("../../libs/logger");
+const SuiteE2E = require('./suite-e2e');
+const { findFirstUserWithRole } = require('./users');
 
 const e2e = async ({
   title = 'Suite',
   tests = () => {},
-  beforeAll: userBeforeAll = (_suite) => {},
-  afterAll: userAfterAll = (_suite) => {}
+  beforeAll: userBeforeAll = async (_suite) => {},
+  afterAll: userAfterAll = async (_suite) => {},
+  afterEach: userAfterEach = async (_suite) => {},
+  beforeEach: useBeforeEach = async (_suite) => {}
 } = {}) => {
   describe(title, () => {
-    let suite = {
-      api: null,
-      server: null
-    };
+    let suite = new SuiteE2E({
+      admin: async() =>  await findFirstUserWithRole('admin'),
+      customer: async() =>  await findFirstUserWithRole('admin'),
+    });
 
     beforeAll(async () => {
       try {
         logger.info('Starting app and running migrations...');
         await createApp();
         await upSeed();
-        suite.api = request(getApp());
+        suite.setApi(request(getApp()));
         await userBeforeAll(suite);
         logger.info('Setup complete.');
       } catch (error) {
         logger.error('Error in beforeAll:', error);
         throw error;
       }
+    });
+
+    beforeEach(async() => {
+      useBeforeEach(suite);
+    });
+
+    afterEach(async () => {
+      userAfterEach(suite);
     });
 
     tests(suite);
