@@ -1,0 +1,61 @@
+name: CI
+
+on: 
+  push:
+    branches:
+      - master
+  
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.0.0-v8-canary'
+      - name: Install dependencies
+        run: cd code && cp .env.ci.example .env && npm install && npm run lint
+
+  test-e2e:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: my_store_test
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pa5swod
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.0.0-v8-canary'
+      - name: Wait for Postgres to be ready
+        run: |
+          until pg_isready -h 127.0.0.1 -p 5432; do
+            echo "Waiting for postgres...";
+            sleep 2;
+          done
+      - name: Setup
+        run: cd code && cp .env.ci.example .env && npm install 
+      - name: Migrations
+        run: cd code && npm run migrations:run
+      - name: Run E2E 
+        run: cd code && npm run e2e
