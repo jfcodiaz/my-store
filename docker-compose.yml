@@ -4,11 +4,11 @@ services:
   node: 
     image: node:20
     volumes:
-      - ./code/:/app
+      - ./:/app
     container_name: ${POJECT}_node
     command: tail -f /dev/null
     hostname: ${PROJECT_PREFIX}-node
-    working_dir: /app
+    working_dir: /app/code
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}

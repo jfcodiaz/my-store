@@ -3,11 +3,15 @@ const { post, get, put, patch, remove } = require('./request');
 class SuiteE2E {
   #user = null;
   #api = null;
+  #endpoint = null;
   #users = {};
   #userLoadFunctions = null;
+  #endpoints = {};
+  #buildeRoute = null;
 
-  constructor(userLoadFunctions) {
+  constructor(userLoadFunctions, builderRoute) {
     this.#userLoadFunctions = userLoadFunctions;
+    this.#buildeRoute = builderRoute
   }
 
   async loadUser(alias) {
@@ -20,6 +24,18 @@ class SuiteE2E {
 
   as(alias) {
     this.#user = this.#users[alias];
+
+    return this;
+  }
+
+  addEndpoint(alias, enpoint) {
+    this.#endpoints[alias] = enpoint;
+
+    return this;
+  }
+
+  setEndpoint(alias, params = {}, args = {}) {
+    this.#endpoint = this.#buildeRoute(this.#endpoints[alias], params, args);
 
     return this;
   }
@@ -40,11 +56,11 @@ class SuiteE2E {
     return this.#api = api;
   }
 
-  post = (url, options) => post({ suite: this, url, ...options });
-  get = (url, options) => get({ suite: this, url, ...options });
-  put = (url, options) => put({ suite: this, url, ...options });
-  patch = (url, options) => patch({ suite: this, url, ...options });
-  delete = (url, options) => remove({ suite: this, url, ...options });
+  post = (options) => post({ suite: this, url: this.#endpoint, ...options });
+  get = (options) => get({ suite: this, url: this.#endpoint, ...options });
+  put = (options) => put({ suite: this, url: this.#endpoint, ...options });
+  patch = (options) => patch({ suite: this, url: this.#endpoint, ...options });
+  delete = (options) => remove({ suite: this, url: this.#endpoint,...options });
 
   asGuest() {
     this.#user = null;

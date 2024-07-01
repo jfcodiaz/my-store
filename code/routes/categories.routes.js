@@ -15,7 +15,7 @@ router.post('/',
   async(req, res, next) => {
     try {
       const entity = await service.create(req.body);
-      res.json( {
+      res.status(201).json( {
         success: true,
         entity
       });
@@ -30,7 +30,12 @@ router.get('/',
   checkRoles('admin', 'seller', 'customer'),
   async(req, res, next) => {
   try {
-    res.json(await service.findAll());
+    const { page = 1, per_page = 10, pagination } = req.query;
+    res.json(await service.findAll({
+      page,
+      per_page,
+      pagination: pagination !== 'false'
+    }));
   } catch (error) {
     next(error);
   }

@@ -5,7 +5,10 @@ const loginTest = require('./login.js');
 e2e({
   title: 'Test for auth /api/v1/auth',
   beforeAll: async (suite) => {
-    suite.loadUser(ADMIN);
+    await suite.loadUser(ADMIN);
+    suite
+      .addEndpoint('login', '/api/v1/auth/login')
+      .setEndpoint('login');
   },
   beforeEach: async (suite) => {
     suite.asGuest();

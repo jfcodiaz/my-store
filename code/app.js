@@ -5,6 +5,7 @@ require('./utils/auth');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler} = require('./middlewares/error.handler');
 const { config } = require("./config/config");
 const logger = require("./libs/logger");
+const { getBasePathMiddlewares } = require("./services/get-base-path");
 
 let app;
 let server;
@@ -14,6 +15,7 @@ const getServer = () => server;
 
 const createApp = () => {
   app = express();
+  app.use(getBasePathMiddlewares);
   const port = config.port;
   app.use(express.json())
   routeApi(app);

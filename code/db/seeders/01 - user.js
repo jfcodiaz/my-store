@@ -11,7 +11,7 @@ module.exports = {
     }
     const users = [];
     const hash = await bcrypt.hash(process.env.INITIAL_PASS, config.encryptSalt);
-    for(let i = 0; i < 200; i++) {
+    for(let i = 0; i < 2; i++) {
       users.push({
         password: hash,
         email: `admin_${i}_${faker.internet.email()}`,
@@ -19,6 +19,16 @@ module.exports = {
         created_at: new Date()
       });
     }
+
+    for(let i = 0; i < 50; i++) {
+      users.push({
+        password: hash,
+        email: `customer_${i}_${faker.internet.email()}`,
+        role: 'customer',
+        created_at: new Date()
+      });
+    }
+
     return queryInterface.bulkInsert(USER_TABLE, users);
   },
   down: (queryInterface) => {

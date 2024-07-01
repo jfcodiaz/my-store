@@ -7,6 +7,7 @@
   "coverageReporters": ["json", "lcov", "text", "clover", "html"],
   "coveragePathIgnorePatterns": [
     "./db/migrations",
-    "./db/seeders"
+    "./db/seeders",
+    "./tests"
   ]
 }
