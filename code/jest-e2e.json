@@ -4,6 +4,7 @@
   "testEnvironment": "node",
   "testRegex": ".e2e.js$",
   "coverageDirectory": "../coverage/e2e",
+  "testResultsProcessor": "../../node_modules/jest-sonar-reporter",
   "coverageReporters": ["json", "lcov", "text", "clover", "html"],
   "coveragePathIgnorePatterns": [
     "./db/migrations",
