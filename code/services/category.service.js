@@ -5,10 +5,6 @@ const { getBasePath, getAbsoluteUrl } = require('./get-base-path');
 
 const { models }  = sequelize;
 class CategoryService {
-  constructor(){
-
-  }
-
   async create(data) {
     return await models.Category.create(data);
   }

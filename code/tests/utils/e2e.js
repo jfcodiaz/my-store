@@ -25,7 +25,7 @@ const e2e = async ({
       beforeAll(async () => {
         try {
           logger.info('Starting app and running migrations...');
-          await createApp();
+          createApp();
           await upSeed();
           suite.setApi(request(getApp()));
           await userBeforeAll(suite);

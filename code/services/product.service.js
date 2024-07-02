@@ -2,9 +2,6 @@ const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
 
 class ProductsService {
-  constructor() {
-  }
-
   async find() {
     return models.Product.findAll();
   }

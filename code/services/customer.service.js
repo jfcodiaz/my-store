@@ -4,8 +4,6 @@ const { config } = require('../config/config');
 const bcrypt = require('bcrypt');
 
 class CustomerService {
-  constructor() {}
-
   async create(data) {
     const hash = await bcrypt.hash(data.user.password, config.encryptSalt);
     const newData = {

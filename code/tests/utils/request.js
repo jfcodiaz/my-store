@@ -6,7 +6,7 @@ const request = async ({
   headers = {}
 } = {}) => {
   const _headers = { ...headers };
-  if (suite.getSelectedUser() && suite.getSelectedUser().token) {
+  if (suite.getSelectedUser()?.token) {
     _headers['Authorization'] = `Bearer ${ suite.getSelectedUser().token }`;
   }
 

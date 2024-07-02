@@ -53,7 +53,9 @@ class SuiteE2E {
   }
 
   setApi(api) {
-    return this.#api = api;
+    this.#api = api;
+
+    return this;
   }
 
   post = (options) => post({ suite: this, url: this.#endpoint, ...options });
