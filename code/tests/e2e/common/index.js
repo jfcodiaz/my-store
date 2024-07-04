@@ -1,9 +1,11 @@
-const unauthenticatedTest = require("./unauthenticated");
-const unauthorizedTest = require("./unauthorized");
 const updateTest = require("./update");
+const paginationTest = require("./pagination");
+const unauthorizedTest = require("./unauthorized");
+const unauthenticatedTest = require("./unauthenticated");
 
 module.exports = {
-  unauthenticatedTest,
+  updateTest,
+  paginationTest,
   unauthorizedTest,
-  updateTest
+  unauthenticatedTest,
 }
