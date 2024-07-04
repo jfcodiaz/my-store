@@ -36,8 +36,8 @@ router.get('/:id',
 
 router.post('/',
   passport.authenticate('jwt', {session: false}),
-  validatorHandler(createProductSchema, 'body'),
   checkRoles('admin'),
+  validatorHandler(createProductSchema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body;

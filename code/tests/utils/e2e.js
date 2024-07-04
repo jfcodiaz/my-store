@@ -17,7 +17,7 @@ const e2e = async ({
     describe(title, () => {
       let suite = new SuiteE2E({
           [ADMIN]: async() =>  await findFirstUserWithRole(ADMIN),
-          [CUSTOMER]: async() =>  await findFirstUserWithRole(CUSTOMER),
+          [CUSTOMER]: async() =>  await findFirstUserWithRole(CUSTOMER)
         },
         buildRoute
       );

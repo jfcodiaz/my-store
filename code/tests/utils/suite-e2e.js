@@ -1,10 +1,13 @@
 const { post, get, put, patch, remove } = require('./request');
+const { GUEST } = require('./users');
 
 class SuiteE2E {
   #user = null;
   #api = null;
   #endpoint = null;
-  #users = {};
+  #users = {
+    [GUEST]: null
+  };
   #userLoadFunctions = null;
   #endpoints = {};
   #buildeRoute = null;
@@ -15,10 +18,9 @@ class SuiteE2E {
   }
 
   async loadUser(alias) {
-    if(this.#users[alias] === undefined) {
+    if(alias != GUEST && this.#users[alias] === undefined) {
       this.#users[alias] = await this.#userLoadFunctions[alias]();
     }
-
     return this.#users[alias];
   }
 
@@ -65,7 +67,7 @@ class SuiteE2E {
   delete = (options) => remove({ suite: this, url: this.#endpoint,...options });
 
   asGuest() {
-    this.#user = null;
+    this.#user = this.#users.GUEST;
 
     return this;
   }
