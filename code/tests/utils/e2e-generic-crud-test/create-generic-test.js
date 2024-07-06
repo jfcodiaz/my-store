@@ -1,8 +1,11 @@
 const { unauthorizedTest, unauthenticatedTest } = require("../../e2e/common");
+const toBeArrayProp = require("../expects/to-be-array-prop");
 const { GUEST } = require("../users");
+const failOnCreateWithoutParamsTest = require("./create-generic-test/fail-on-create-without-params");
 
 const creteGenericTest = async ({
   suite,
+  entityName,
   create,
   users,
   extractExpect = () => {},
@@ -20,39 +23,24 @@ const creteGenericTest = async ({
         }
         unauthorizedTest({
           suite,
-          title: `Fail to create as ${noAllowedUser}`,
+          title: `Fail to create ${entityName} as ${noAllowedUser}`,
           as: noAllowedUser,
           method: 'post',
           data: {}
         });
       });
 
-    //Try to create entity without params as allowed users
-    create.allowedUsers.forEach(async alloweUser => {
-      test(`Create category as ${alloweUser}` , async () => {
-        const data = {};
-        const { statusCode, body, text} = await suite.as(alloweUser).post({ data });
-        debug(statusCode, body, text);
-        expect(statusCode).toBe(400);
-        expect(body).toHaveProperty('error');
-        expect(body).toHaveProperty('message');
-        const expReg = create.requireProperties.map(prop =>  `(?=.*\\b${prop})\\b`).join('');
-        expect(body.message).toMatch(new RegExp(expReg));
-      });
-    });
+    failOnCreateWithoutParamsTest(entityName, suite, create);
 
     //Create entity as allowed users
     create.allowedUsers.forEach(async alloweUser => {
-      test(`Create category as ${alloweUser}` , async () => {
+      test(`Create ${entityName} as ${alloweUser} successfully` , async () => {
         const data = await buildData();
         const { statusCode, body, text} = await suite.as(alloweUser).post({ data });
-        debug(statusCode, body, text);
         expect(statusCode).toBe(201);
-        const entiy = await create.loadEntity(body.id);
+        const entity = await create.loadEntity(body.id);
         extractExpect(statusCode, body, text, entity);
-        create.checkToBeSameProperties.forEach(prop => {
-          expect(entiy[prop]).toBe(body[prop]);
-        });
+        toBeArrayProp(create.checkToBeSameProperties, entity, body)
       });
     });
   });

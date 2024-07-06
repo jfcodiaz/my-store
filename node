@@ -1,0 +1,3 @@
+#/bin/bash
+
+docker exec -it my-store_node bash
