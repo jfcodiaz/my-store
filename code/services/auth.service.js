@@ -1,63 +1,63 @@
-const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
-const { config } = require('../config/config');
+const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const UserService = require('./user.service');
+const { config } = require('../config/config');
 
 const userService = new UserService();
 
 class AuthService {
-  async getUser(email, password) {
-    const user = await userService.findByEmail(email, {scope: 'withPassword'});
-    if(!user) {
+  async getUser (email, password) {
+    const user = await userService.findByEmail(email, { scope: 'withPassword' });
+    if (!user) {
       throw boom.unauthorized();
     }
     const isMatch = await bcrypt.compare(password, user.password);
-    if(!isMatch) {
+    if (!isMatch) {
       throw boom.unauthorized();
     }
 
-    return await userService.findByEmail(email);;
+    return await userService.findByEmail(email);
   }
 
-  singToken(user) {
+  singToken (user) {
     const playload = {
       sub: user.id,
-      role:  user.role
-    }
+      role: user.role
+    };
 
     const token = jwt.sign(playload, config.jwtSecret);
     return {
       user,
       token
-    }
+    };
   }
 
-  async sendRecovery(email) {
+  async sendRecovery (email) {
     const user = await userService.findByEmail(email);
-    if(!user) {
+    if (!user) {
       return;
     }
 
-    const playload = { sub: user.id};
-    const token = jwt.sign(playload, config.jwtSecret, { expiresIn: '15min'});
+    const playload = { sub: user.id };
+    const token = jwt.sign(playload, config.jwtSecret, { expiresIn: '15min' });
     const link = `http://localhost/?token=${token}`;
-    await userService.update(user.id, {recoveryToken: token});
+    await userService.update(user.id, { recoveryToken: token });
     const mail = {
       from: config.smtpEmail,
       to: user.email,
-      subject: "Recovery password",
+      subject: 'Recovery password',
       html: `<b>Ingresa a este link : ${link}</b>`
-    }
+    };
     await this.sendEmail(mail);
   }
 
-  async changePassword(token, newPassword) {
+  async changePassword (token, newPassword) {
     try {
       const payload = jwt.verify(token, config.jwtSecret);
-      let user = await userService.findOne(payload.sub, {scope: 'withPassword'});
-      if(user.recoveryToken != token) {
+      let user = await userService.findOne(payload.sub, { scope: 'withPassword' });
+      if (user.recoveryToken !== token) {
         throw boom.unauthorized();
       }
       const hash = await bcrypt.hash(newPassword, config.encryptSalt);
@@ -71,7 +71,8 @@ class AuthService {
       throw boom.unauthorized();
     }
   }
-  async sendEmail(infoMail) {
+
+  async sendEmail (infoMail) {
     const transporter = nodemailer.createTransport({
       host: config.smtpHost,
       secure: config.smtpSecure,

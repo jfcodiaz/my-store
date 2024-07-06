@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
-const productId =  Joi.number().integer();
 const amount = Joi.number().integer().min(1);
+const productId = Joi.number().integer();
 
 const addItemSchema = Joi.object({
   productId: productId.required(),
@@ -10,4 +10,4 @@ const addItemSchema = Joi.object({
 
 module.exports = {
   addItemSchema
-}
+};

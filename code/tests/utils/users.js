@@ -1,6 +1,6 @@
 const UserService = require('../../services/user.service.js');
 const AuthService = require('../../services/auth.service.js');
-const boom  = require('@hapi/boom');
+const boom = require('@hapi/boom');
 
 const userService = new UserService();
 const authService = new AuthService();
@@ -10,11 +10,11 @@ module.exports = {
   CUSTOMER: 'customer',
   GUEST: 'guest',
   findFirstUserWithRole: async (role) => {
-    if(role === this.GUEST) {
-      return null
+    if (role === this.GUEST) {
+      return null;
     }
     const user = await userService.findFirstUserWithRole(role);
-    if(user === null) {
+    if (user === null) {
       throw boom.notFound();
     }
     return {
@@ -22,4 +22,4 @@ module.exports = {
       token: await authService.singToken(user).token
     };
   }
-}
+};

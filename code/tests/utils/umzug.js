@@ -5,7 +5,7 @@ const umzug = new Umzug({
   migrations: { glob: './db/seeders/*.js' },
   context: sequelize.getQueryInterface(),
   storage: new SequelizeStorage({ sequelize }),
-  logger: undefined,
+  logger: undefined
 });
 
 const upSeed = async () => {
@@ -15,10 +15,10 @@ const upSeed = async () => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 const downSeed = async () => {
   await sequelize.drop();
-}
+};
 
-module.exports = {upSeed , downSeed}
+module.exports = { upSeed, downSeed };

@@ -14,10 +14,10 @@ e2e({
 
     await Promise.all([
       suite.loadUser(ADMIN),
-      suite.loadUser(CUSTOMER),
+      suite.loadUser(CUSTOMER)
     ]);
   },
-  beforeEach:  async suite => {
+  beforeEach: async suite => {
     suite.setEndpoint('categories');
   },
   tests: (suite) => {

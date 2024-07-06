@@ -11,10 +11,10 @@ module.exports = {
     defaultValue: ''
   },
   async up (queryInterface) {
-    await queryInterface.addColumn(PRODUCT_TABLE, 'image', this.imageSchema)
+    await queryInterface.addColumn(PRODUCT_TABLE, 'image', this.imageSchema);
   },
 
   async down (queryInterface) {
-    await queryInterface.removeColumn(PRODUCT_TABLE, 'image')
+    await queryInterface.removeColumn(PRODUCT_TABLE, 'image');
   }
 };

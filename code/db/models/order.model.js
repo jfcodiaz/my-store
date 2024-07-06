@@ -1,13 +1,12 @@
-const { Model } = require("sequelize");
-const { ORDER_TABLE, orderSchema: orderSchemaV1} = require('../migrations/20240607205530-craete-orders');
-
+const { Model } = require('sequelize');
+const { ORDER_TABLE, orderSchema: orderSchemaV1 } = require('../migrations/20240607205530-craete-orders');
 
 const orderSchema = {
-  ...orderSchemaV1,
-}
+  ...orderSchemaV1
+};
 
 class Order extends Model {
-  static associate(models) {
+  static associate (models) {
     this.belongsTo(models.Customer, {
       as: 'customer'
     });
@@ -16,22 +15,21 @@ class Order extends Model {
       through: models.OrderItem,
       foreignKey: 'orderId',
       otherKey: 'productId'
-    })
+    });
     this.hasMany(models.OrderItem, {
       as: 'items',
       foreignKey: 'orderId'
-    })
-
+    });
   }
 
-  static config(sequelize) {
+  static config (sequelize) {
     return {
       sequelize,
-      tableName: ORDER_TABLE,
+      timestamp: true,
       modelName: 'Order',
-      timestamp: true
-    }
+      tableName: ORDER_TABLE
+    };
   }
 }
 
-module.exports = {Order, ORDER_TABLE, orderSchema};
+module.exports = { Order, ORDER_TABLE, orderSchema };

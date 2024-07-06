@@ -1,22 +1,22 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 const { ORDER_ITEM_TABLE, orderItemSchema } = require('../migrations/20240608011618-create-order-item');
 
 class OrderItem extends Model {
-  static associate(models) {
+  static associate (models) {
     this.belongsTo(models.Product, {
-      'as': 'product',
-      'foreignKey': 'productId'
+      as: 'product',
+      foreignKey: 'productId'
     });
   }
 
-  static config(sequelize) {
+  static config (sequelize) {
     return {
       sequelize,
-      tableName: ORDER_ITEM_TABLE,
+      timestamps: false,
       modelName: 'OrderItem',
-      timestamps: false
-    }
+      tableName: ORDER_ITEM_TABLE
+    };
   }
 }
 
-module.exports = { OrderItem, ORDER_ITEM_TABLE, orderItemSchema}
+module.exports = { OrderItem, ORDER_ITEM_TABLE, orderItemSchema };

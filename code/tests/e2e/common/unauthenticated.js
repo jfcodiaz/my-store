@@ -7,13 +7,13 @@ module.exports = ({
   getParams = async (entity) => {
     return {
       id: entity.id
-    }
+    };
   },
   getArgumets = async () => ({}),
   data = {}
 } = {}) => {
   test(title, async () => {
-    if(endpoint) {
+    if (endpoint) {
       const entity = await loadEntityFn();
       suite.setEndpoint(
         endpoint,
@@ -21,8 +21,8 @@ module.exports = ({
         await getArgumets(entity)
       );
     }
-    const {statusCode, text } = await suite.asGuest()[method]({ data });
+    const { statusCode, text } = await suite.asGuest()[method]({ data });
     expect(statusCode).toBe(401);
     expect(text).toMatch(/Unauthorized/);
   });
-}
+};

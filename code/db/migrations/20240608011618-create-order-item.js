@@ -10,7 +10,7 @@ module.exports = {
   orderItemSchema: {
     id: {
       allowNull: false,
-      autoIncrement:true,
+      autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
@@ -55,4 +55,3 @@ module.exports = {
     queryInterface.dropTable(this.ORDER_ITEM_TABLE);
   }
 };
-

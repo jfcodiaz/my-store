@@ -1,37 +1,36 @@
 const express = require('express');
-
-const router = express.Router();
+const passport = require('passport');
+const { OrderService } = require('../services/orders.service');
+const { addItemSchema } = require('../schemas/order-item.schema');
 const validatorHandler = require('../middlewares/validator.handler');
 const { getOrderSchema, createOrderSchema } = require('../schemas/order.schema');
-const passport = require('passport');
-const {OrderService} = require('../services/orders.service');
-const { addItemSchema } = require('../schemas/order-item.schema');
 
+const router = express.Router();
 const service = new OrderService();
 
 router.post('/',
-  passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createOrderSchema, 'body'),
   async (req, res, next) => {
     try {
       res.status(201).json(await service.create(req.body));
-    } catch(error) {
+    } catch (error) {
       next(error);
     }
-});
+  });
 
 router.get('/',
-  passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', { session: false }),
   async (req, res, next) => {
     try {
       res.json(await service.findAll());
-    } catch(error) {
+    } catch (error) {
       next(error);
     }
-});
+  });
 
 router.get('/:id',
-  passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getOrderSchema),
   async (req, res, next) => {
     try {
@@ -42,7 +41,7 @@ router.get('/:id',
   });
 
 router.post('/:orderId/items',
-  passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(addItemSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -52,13 +51,12 @@ router.post('/:orderId/items',
     } catch (error) {
       next(error);
     }
-
   }
-)
+);
 
 router.delete('/:orderId/items/:itemId',
-  passport.authenticate('jwt', {session: false}),
-  async(req, res, next) => {
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
     try {
       await service.removeItem(
         req.params.orderId,
@@ -72,16 +70,15 @@ router.delete('/:orderId/items/:itemId',
 );
 
 router.delete('/:id',
-  passport.authenticate('jwt', {session: false}),
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(getOrderSchema),
   async (req, res, next) => {
     try {
       res.status(204).json(await service.delete(req.params.id));
-    } catch(error) {
+    } catch (error) {
       next(error);
     }
-  });
-
-
+  }
+);
 
 module.exports = router;

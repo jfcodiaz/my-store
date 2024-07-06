@@ -1,11 +1,11 @@
-const { getAbsoluteUrl, getBasePath } = require("./get-base-path");
+const { getAbsoluteUrl, getBasePath } = require('./get-base-path');
 
 module.exports = async ({
   offset,
-  currentPage,
   perPage,
   getEntities,
-  absoluteUrl
+  absoluteUrl,
+  currentPage
 } = {}) => {
   const entities = await getEntities();
 
@@ -28,4 +28,4 @@ module.exports = async ({
     to: offset + entities.rows.length,
     data: entities.rows
   };
-}
+};
