@@ -1,9 +1,11 @@
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
-
-class ProductsService {
-  async find() {
-    return models.Product.findAll();
+const findAll = require('./repositories/common/find-all');
+const Repository = require('./repositories/common/respository');
+class ProductsService extends Repository {
+  model = models.Product;
+  async findAll (args = {}) {
+    return findAll({model: models.Product, ...args});
   }
 
   async findOne(id) {

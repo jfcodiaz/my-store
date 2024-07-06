@@ -1,5 +1,4 @@
 const { faker } = require('@faker-js/faker');
-const { CATEGORY_TABLE } = require('../models/category.model');
 const { seed } = require('../seed');
 const { PRODUCT_TABLE } = require('../models/product.model');
 const CategoryService = require('../../services/category.service');

@@ -1,18 +1,23 @@
 const { e2e } = require("../e2e")
 const creteGenericTest = require("./create-generic-test")
+const readGenericTest = require("./read-generic-test")
 
 const e2eGenericCrudTest = ({
   title = 'Generic Crud Test',
+  EntityRepository,
+  entityName,
   entitiesEndpoint,
   entityEndpoint,
   users = [],
   buildData = () => ({}),
-  debug = (statusCode, body, text) => {},
   create = {
     allowedUsers: []
   },
   read = {
     allowedUsers: []
+  },
+  findRandomEntity = async () => {
+    return (new EntityRepository).findRandom();
   }
 } ={}) => {
   e2e({
@@ -23,7 +28,7 @@ const e2eGenericCrudTest = ({
         .addEndpoint('entity', entityEndpoint)
       await Promise.all(
         users.map((user) => {
-          suite.loadUser(user)
+          return suite.loadUser(user)
         })
       )
     },
@@ -32,15 +37,11 @@ const e2eGenericCrudTest = ({
     },
     tests: (suite) => {
       creteGenericTest({
-        suite, users, create, buildData, debug
+        suite, entityName, users, create, buildData
       });
-      /*readGenericTest({
-        suite, read, users
+      readGenericTest({
+        suite, entityName, read, users, findRandomEntity
       });
-      */
-      //updateGenericTest();
-      //deleteGenericTest();
-     // test('defautl', () => { expect(true).toBe(true)})
     }
   })
 }

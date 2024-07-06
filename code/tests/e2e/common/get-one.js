@@ -1,7 +1,7 @@
 module.exports = ({
   suite,
   title = 'Get one',
-  user,
+  as,
   loadEntityFn,
   endpoint = null,
   getParams = async (entity) => {
@@ -18,11 +18,13 @@ module.exports = ({
 } = {}) => {
   test(title, async () => {
     const entity = await loadEntityFn();
-    const { statusCode, body } = await suite.setEndpoint(
+    suite.setEndpoint(
       endpoint,
       await getParams(entity),
       await getArgumets(entity)
-    ).get()
+    );
+    suite.as(as);
+    const { statusCode, body } = await suite.get()
     expect(statusCode).toBe(200);
     await expects(entity, body);
   });
