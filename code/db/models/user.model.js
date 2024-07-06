@@ -34,32 +34,32 @@ const UserSchema = {
     field: 'created_at',
     defaultValue: Sequelize.NOW
   }
-}
+};
 
 class User extends Model {
-  static associate(models) {
+  static associate (models) {
     this.hasOne(models.Customer, {
       as: 'customer',
       foreignKey: 'userId'
     });
   }
 
-  static config(sequelize) {
+  static config (sequelize) {
     return {
       sequelize,
       tableName: USER_TABLE,
       modelName: 'User',
       timestamps: false,
       defaultScope: {
-        attributes: { exclude: ['password', 'recoveryToken'] },
+        attributes: { exclude: ['password', 'recoveryToken'] }
       },
       scopes: {
         withPassword: {
-          attributes: {},
+          attributes: {}
         }
       }
-    }
+    };
   }
 }
 
-module.exports = { USER_TABLE, UserSchema, User }
+module.exports = { USER_TABLE, UserSchema, User };

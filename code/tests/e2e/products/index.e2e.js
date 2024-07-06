@@ -1,11 +1,11 @@
-const { faker } = require("@faker-js/faker");
-const { ADMIN, CUSTOMER, GUEST } = require("../../utils/users");
-const ProductsService = require("../../../services/product.service");
-const CategoryService = require("../../../services/category.service");
-const { e2eGenericCrudTest } = require("../../utils/e2e-generic-crud-test");
+const { faker } = require('@faker-js/faker');
+const { ADMIN, CUSTOMER, GUEST } = require('../../utils/users');
+const ProductsService = require('../../../services/product.service');
+const CategoryService = require('../../../services/category.service');
+const e2eGenericCrudTest = require('../../utils/e2e-generic-crud-test');
 
-const categoryService = new CategoryService();
 const productService = new ProductsService();
+const categoryService = new CategoryService();
 
 e2eGenericCrudTest({
   entityName: 'Product',
@@ -15,14 +15,14 @@ e2eGenericCrudTest({
   entityEndpoint: '/api/v1/products/:id',
   users: [GUEST, CUSTOMER, ADMIN],
   buildData: async () => {
-    const  category = await categoryService.findOneRadom();
+    const category = await categoryService.findOneRadom();
     return {
       name: faker.word.adjective(),
       description: faker.word.words(10),
       price: parseInt(faker.finance.amount()),
       image: faker.internet.url(),
-      categoryId:  category.id
-    }
+      categoryId: category.id
+    };
   },
   create: {
     allowedUsers: [ADMIN],
@@ -33,7 +33,7 @@ e2eGenericCrudTest({
       'id', 'name', 'description', 'price'
     ],
     loadEntity: async (id) => {
-      return productService.findOne(id)
+      return productService.findOne(id);
     }
   },
   read: {
@@ -43,4 +43,4 @@ e2eGenericCrudTest({
       'id', 'name', 'description', 'price'
     ]
   }
-})
+});

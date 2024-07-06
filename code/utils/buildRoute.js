@@ -10,6 +10,6 @@ const buildRoute = (baseRoute, params = {}, args = {}) => {
   }
 
   return route;
-}
+};
 
 module.exports = buildRoute;

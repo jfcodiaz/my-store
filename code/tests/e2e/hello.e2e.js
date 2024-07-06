@@ -5,7 +5,7 @@ e2e({
   tests: (suite) => {
     test('GET /', async () => {
       suite
-        .addEndpoint('home','/')
+        .addEndpoint('home', '/')
         .setEndpoint('home');
       const response = await suite.asGuest().get();
       expect(response.text).toMatch(/Hola/);

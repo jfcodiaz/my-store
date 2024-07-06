@@ -1,7 +1,7 @@
-const sequelize = require("../../../libs/sequelize");
+const sequelize = require('../../../libs/sequelize');
 
 class Repository {
-  findRandom() {
+  findRandom () {
     return this.model.findOne({
       order: [
         sequelize.random()

@@ -6,16 +6,16 @@ const router = express.Router();
 const service = new AuthService();
 
 router.post('/login',
-  passport.authenticate('local', {session: false}),
-  async(req, res, next) => {
+  passport.authenticate('local', { session: false }),
+  async (req, res, next) => {
     try {
       const user = req.user;
       res.json(service.singToken(user));
-    } catch(error) {
+    } catch (error) {
       next(error);
     }
   }
-)
+);
 
 router.post('/recovery',
   async (req, res, next) => {
@@ -23,7 +23,7 @@ router.post('/recovery',
       const { email } = req.body;
       await service.sendRecovery(email);
       res.json({
-        "message": "If an account with that email exists, you will receive a password reset email shortly."
+        message: 'If an account with that email exists, you will receive a password reset email shortly.'
       });
     } catch (error) {
       next(error);

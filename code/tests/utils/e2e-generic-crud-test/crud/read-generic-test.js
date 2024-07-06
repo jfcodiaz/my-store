@@ -1,6 +1,6 @@
-const { paginationTest, unauthenticatedTest, getOneTest } = require("../../e2e/common");
+const { paginationTest, unauthenticatedTest, getOneTest } = require('../../../e2e/common');
 const pluralize = require('pluralize');
-const { GUEST } = require("../users");
+const { GUEST } = require('../../users');
 
 const readGenericTest = async ({
   entityName,
@@ -18,10 +18,10 @@ const readGenericTest = async ({
       });
     });
 
-    if(!read.usesCanReadAllPaginated.includes(GUEST)){
+    if (!read.usesCanReadAllPaginated.includes(GUEST)) {
       unauthenticatedTest({
         suite,
-        title: `Response Unauthroized when request all ${pluralize(entityName)} paginated whit unauthenticated`,
+        title: `Response Unauthroized when request all ${pluralize(entityName)} paginated whit unauthenticated`
       });
     }
     read.usesCanReadAllAnyOne.forEach(allowedUser => {
@@ -43,7 +43,7 @@ const readGenericTest = async ({
       });
     });
 
-    if(!read.usesCanReadAllAnyOne.includes(GUEST)){
+    if (!read.usesCanReadAllAnyOne.includes(GUEST)) {
       unauthenticatedTest({
         suite,
         title: `Response Unauthroized when request one ${entityName} unauthenticated`,
@@ -51,11 +51,10 @@ const readGenericTest = async ({
         loadEntityFn: async () => {
           const entity = await findRandomEntity();
           return entity;
-        },
+        }
       });
     }
-
   });
-}
+};
 
 module.exports = readGenericTest;

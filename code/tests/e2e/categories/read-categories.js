@@ -1,21 +1,21 @@
-const CategoryService = require("../../../services/category.service");
-const { ADMIN, CUSTOMER } = require("../../utils/users");
-const getOneTest = require("../common/get-one");
-const paginationTest = require("../common/pagination");
-const unauthenticatedTest = require("../common/unauthenticated");
+const getOneTest = require('../common/get-one');
+const paginationTest = require('../common/pagination');
+const { ADMIN, CUSTOMER } = require('../../utils/users');
+const unauthenticatedTest = require('../common/unauthenticated');
+const CategoryService = require('../../../services/category.service');
 
 module.exports = async suite => {
   describe('[GET] /', () => {
     const categoryService = new CategoryService();
 
     paginationTest({
-      title : 'Get all with pagination as Admin',
+      title: 'Get all with pagination as Admin',
       suite,
       as: ADMIN
     });
 
     paginationTest({
-      title : 'Get all with pagination as Customer',
+      title: 'Get all with pagination as Customer',
       suite,
       as: CUSTOMER
     });
@@ -25,8 +25,8 @@ module.exports = async suite => {
       title: 'Get one as Admin',
       as: ADMIN,
       endpoint: 'category',
-      loadEntityFn: async() => {
-        return await categoryService.findOneRadom()
+      loadEntityFn: async () => {
+        return await categoryService.findOneRadom();
       },
       expects: async (entiy, body) => {
         expect(entiy.id).toBe(body.id);
@@ -35,6 +35,6 @@ module.exports = async suite => {
       }
     });
 
-    unauthenticatedTest({suite});
-  })
-}
+    unauthenticatedTest({ suite });
+  });
+};

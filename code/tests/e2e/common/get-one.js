@@ -7,10 +7,10 @@ module.exports = ({
   getParams = async (entity) => {
     return {
       id: entity.id
-    }
+    };
   },
   getArgumets = async () => ({}),
-  expects = async(entity, body) => {
+  expects = async (entity, body) => {
     Object.keys(entity.dataValues).forEach(key => {
       expect(body[key]).toBe(entity[key]);
     });
@@ -24,8 +24,8 @@ module.exports = ({
       await getArgumets(entity)
     );
     suite.as(as);
-    const { statusCode, body } = await suite.get()
+    const { statusCode, body } = await suite.get();
     expect(statusCode).toBe(200);
     await expects(entity, body);
   });
-}
+};

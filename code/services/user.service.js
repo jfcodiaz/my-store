@@ -1,10 +1,10 @@
-const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
+const boom = require('@hapi/boom');
 const { config } = require('../config/config');
 const { models } = require('../libs/sequelize');
 
 class UserService {
-  async create(data) {
+  async create (data) {
     const hash = await bcrypt.hash(data.password, config.encryptSalt);
     const newUser = await models.User.create({
       ...data,
@@ -14,11 +14,11 @@ class UserService {
     return this.findOne(newUser.id);
   }
 
-  async find() {
+  async find () {
     return models.User.findAll();
   }
 
-  async findOne(id, options= {scope:'defaultScope'}) {
+  async findOne (id, options = { scope: 'defaultScope' }) {
     const user = await models.User.scope(options.scope).findByPk(id, options);
     if (!user) {
       throw boom.notFound('user not found');
@@ -26,30 +26,30 @@ class UserService {
     return user;
   }
 
-  async update(id) {
+  async update (id) {
     const user = await this.findOne(id);
 
     return user;
   }
 
-  async delete(id) {
+  async delete (id) {
     const user = await this.findOne(id);
     await user.destroy();
     return { id };
   }
 
-  async findByEmail(email, options= {scope:'defaultScope'}) {
-    const user =  await models.User.scope(options.scope).findOne({
+  async findByEmail (email, options = { scope: 'defaultScope' }) {
+    const user = await models.User.scope(options.scope).findOne({
       ...options,
       where: {
         email
       }
-    })
+    });
 
     return user;
   }
 
-  findFirstUserWithRole(role) {
+  findFirstUserWithRole (role) {
     return models.User.findOne({
       where: { role }
     });

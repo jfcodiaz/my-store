@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
  * @returns {object} - The decoded payload of the JWT.
  * @throws {Error} - If the token is not a valid JWT.
  */
-function decodeToken(token) {
+function decodeToken (token) {
   try {
     const decoded = jwt.decode(token, { complete: true });
     if (!decoded) {

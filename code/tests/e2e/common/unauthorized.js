@@ -6,8 +6,8 @@ module.exports = ({
   data = {}
 } = {}) => {
   test(title, async () => {
-    const {statusCode, text } = await suite.as(user)[method]({ data });
+    const { statusCode, text } = await suite.as(user)[method]({ data });
     expect(statusCode).toBe(401);
     expect(text).toMatch(/Unauthorized/);
   });
-}
+};

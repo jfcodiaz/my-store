@@ -5,7 +5,7 @@ const options = {};
 const env = process.env.NODE_ENV || 'dev';
 const envFile = `.env.${env}`;
 
-if(fs.existsSync(`${envFile}`)){
+if (fs.existsSync(`${envFile}`)) {
   options.path = envFile;
 }
 
@@ -29,7 +29,7 @@ const config = {
   smtpEmail: process.env.SMTP_EMAIL,
   smtpPassword: process.env.SMTP_PASSWORD,
   smtpPort: process.env.SMTP_PORT,
-  smtpSecure: process.env.SMTP_SECURE == 'true'
-}
+  smtpSecure: process.env.SMTP_SECURE === 'true'
+};
 
-module.exports = { config }
+module.exports = { config };

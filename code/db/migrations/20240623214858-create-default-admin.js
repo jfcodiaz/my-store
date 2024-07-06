@@ -13,7 +13,7 @@ module.exports = {
   },
 
   async down () {
-    const user =await userService.findByEmail('admin@local.com');
-    if(user) await userService.delete(user.id);
+    const user = await userService.findByEmail('admin@local.com');
+    if (user) await userService.delete(user.id);
   }
 };

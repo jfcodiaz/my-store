@@ -2,17 +2,17 @@ const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
 
 class OrderService {
-  async create(data) {
+  async create (data) {
     return models.Order.create(data);
   }
 
-  findAll() {
+  findAll () {
     return models.Order.findAll({
       include: ['customer', 'items']
     });
   }
 
-  async findOne(id) {
+  async findOne (id) {
     const entity = await models.Order.findByPk(id, {
       include: [
         { model: models.Customer, as: 'customer' },
@@ -25,12 +25,12 @@ class OrderService {
         }
       ]
     });
-    if(!entity) throw boom.notFound('Order Not Found');
+    if (!entity) throw boom.notFound('Order Not Found');
 
     return entity;
   }
 
-  findByUser(userId) {
+  findByUser (userId) {
     return models.Order.findAll({
       where: {
         '$customer.user.id$': userId
@@ -49,38 +49,35 @@ class OrderService {
         }
       ]
     });
-
   }
 
-
-
-  async update(id, data) {
+  async update (id, data) {
     const entity = await this.findOne(id);
     entity.update(data);
 
     return entity;
   }
 
-  async delete(id) {
+  async delete (id) {
     const entity = await this.findOne(id);
-    return entity.destroy()
+    return entity.destroy();
   }
 
-  async addItem(orderId, data) {
+  async addItem (orderId, data) {
     return models.OrderItem.create({
       orderId,
       ...data
     });
   }
 
-  async removeItem(orderId, itemId) {
+  async removeItem (orderId, itemId) {
     const item = await models.OrderItem.findOne({
       where: {
         orderId,
         id: itemId
       }
     });
-    if(!item) throw boom.notFound('Item not found');
+    if (!item) throw boom.notFound('Item not found');
 
     return item.destroy();
   }

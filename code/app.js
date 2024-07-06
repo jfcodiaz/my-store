@@ -1,11 +1,11 @@
-const express = require("express");
-const routeApi = require('./routes')
 require('./utils/auth');
+const express = require('express');
+const routeApi = require('./routes');
 
-const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler} = require('./middlewares/error.handler');
-const { config } = require("./config/config");
-const logger = require("./libs/logger");
-const { getBasePathMiddlewares } = require("./services/get-base-path");
+const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
+const { config } = require('./config/config');
+const logger = require('./libs/logger');
+const { getBasePathMiddlewares } = require('./services/get-base-path');
 
 let app;
 let server;
@@ -17,7 +17,7 @@ const createApp = () => {
   app = express();
   app.use(getBasePathMiddlewares);
   const port = config.port;
-  app.use(express.json())
+  app.use(express.json());
   routeApi(app);
   app.get('/', (req, res) => {
     res.send('Hola mi server en express');
@@ -27,12 +27,12 @@ const createApp = () => {
   app.use(boomErrorHandler);
   app.use(errorHandler);
   server = app.listen(port, () => {
-    logger.info(`Server on ${port}`)
-  })
-}
+    logger.info(`Server on ${port}`);
+  });
+};
 
 module.exports = {
-  createApp,
   getApp,
+  createApp,
   getServer
-}
+};

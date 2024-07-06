@@ -7,7 +7,7 @@ const { unauthorizedTest, unauthenticatedTest } = require('../common');
 module.exports = suite => {
   describe('[POST] /', () => {
     const method = 'post';
-    unauthenticatedTest({suite, method});
+    unauthenticatedTest({ suite, method });
 
     test('Reject when miss params', async () => {
       const { statusCode, body } = await suite.as(ADMIN).post();
@@ -15,7 +15,7 @@ module.exports = suite => {
       expect(statusCode).toBe(400);
       expect(body).toHaveProperty('error');
       expect(body).toHaveProperty('message');
-      expect(body.message).toMatch(/(?=.*\bname\b)(?=.*\bimage\b)/)
+      expect(body.message).toMatch(/(?=.*\bname\b)(?=.*\bimage\b)/);
     });
 
     test('Create category as admin', async () => {
@@ -43,4 +43,4 @@ module.exports = suite => {
       }
     });
   });
-}
+};

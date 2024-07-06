@@ -1,32 +1,27 @@
-const paginate = require("../../paginate");
+const paginate = require('../../paginate');
 
 module.exports = ({
+  model,
   page = 1,
-  per_page = 10,
-  absoluteUrl = false,
+  perPage = 10,
   pagination = true,
-  model
+  absoluteUrl = false
 } = {}) => {
-  const offset = (page - 1) * per_page;
-  if(pagination === false){
+  const offset = (page - 1) * perPage;
+  if (pagination === false) {
     return model.findAll();
   }
 
   return paginate({
     getEntities: async () => {
       return model.findAndCountAll({
-        limit: per_page,
+        limit: perPage,
         offset
-      })
+      });
     },
     offset,
-    perPage: per_page,
-    currentPage: parseInt(page),
-    absoluteUrl
+    perPage,
+    absoluteUrl,
+    currentPage: parseInt(page)
   });
-}
-
-/*
-async _findAll() {
-
-}*/
+};

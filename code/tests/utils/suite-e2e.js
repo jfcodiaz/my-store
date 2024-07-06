@@ -8,53 +8,54 @@ class SuiteE2E {
   #users = {
     [GUEST]: null
   };
+
   #userLoadFunctions = null;
   #endpoints = {};
   #buildeRoute = null;
 
-  constructor(userLoadFunctions, builderRoute) {
+  constructor (userLoadFunctions, builderRoute) {
     this.#userLoadFunctions = userLoadFunctions;
-    this.#buildeRoute = builderRoute
+    this.#buildeRoute = builderRoute;
   }
 
-  async loadUser(alias) {
-    if(alias != GUEST && this.#users[alias] === undefined) {
+  async loadUser (alias) {
+    if (alias !== GUEST && this.#users[alias] === undefined) {
       this.#users[alias] = await this.#userLoadFunctions[alias]();
     }
     return this.#users[alias];
   }
 
-  as(alias) {
+  as (alias) {
     this.#user = this.#users[alias];
 
     return this;
   }
 
-  addEndpoint(alias, enpoint) {
+  addEndpoint (alias, enpoint) {
     this.#endpoints[alias] = enpoint;
 
     return this;
   }
 
-  setEndpoint(alias, params = {}, args = {}) {
+  setEndpoint (alias, params = {}, args = {}) {
     this.#endpoint = this.#buildeRoute(this.#endpoints[alias], params, args);
 
     return this;
   }
 
-  getUser(alias) {
+  getUser (alias) {
     return this.#users[alias].user;
   }
 
-  getSelectedUser(){
+  getSelectedUser () {
     return this.#user;
   }
 
-  getApi() {
+  getApi () {
     return this.#api;
   }
 
-  setApi(api) {
+  setApi (api) {
     this.#api = api;
 
     return this;
@@ -64,9 +65,9 @@ class SuiteE2E {
   get = (options) => get({ suite: this, url: this.#endpoint, ...options });
   put = (options) => put({ suite: this, url: this.#endpoint, ...options });
   patch = (options) => patch({ suite: this, url: this.#endpoint, ...options });
-  delete = (options) => remove({ suite: this, url: this.#endpoint,...options });
+  delete = (options) => remove({ suite: this, url: this.#endpoint, ...options });
 
-  asGuest() {
+  asGuest () {
     this.#user = this.#users.GUEST;
 
     return this;

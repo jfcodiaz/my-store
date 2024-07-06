@@ -9,5 +9,5 @@ module.exports = {
   updateTest,
   paginationTest,
   unauthorizedTest,
-  unauthenticatedTest,
-}
+  unauthenticatedTest
+};

@@ -51,11 +51,10 @@ module.exports = {
   },
 
   async up (queryInterface) {
-    queryInterface.createTable(this.PRODUCT_TABLE, this.productSchema)
+    queryInterface.createTable(this.PRODUCT_TABLE, this.productSchema);
   },
 
   async down (queryInterface) {
-    queryInterface.dropTable(this.PRODUCT_TABLE)
-
+    queryInterface.dropTable(this.PRODUCT_TABLE);
   }
 };
