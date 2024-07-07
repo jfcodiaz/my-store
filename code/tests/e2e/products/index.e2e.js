@@ -42,5 +42,8 @@ e2eGenericCrudTest({
     checkExistsProperties: [
       'id', 'name', 'description', 'price'
     ]
+  },
+  update: {
+    usersCanUpdateAny: [ADMIN, CUSTOMER]
   }
 });

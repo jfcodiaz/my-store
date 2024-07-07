@@ -1,5 +1,5 @@
 const { GUEST } = require('../../../users');
-const toBeArrayProp = require('../../../expects/to-be-array-prop');
+const toBeSameArrayProp = require('../../../expects/to-be-same-array-prop');
 const failOnCreateWithoutParamsTest = require('./fail-on-create-without-params');
 const { unauthorizedTest, unauthenticatedTest } = require('../../../../e2e/common');
 
@@ -39,7 +39,7 @@ const creteGenericTest = async ({
         expect(statusCode).toBe(201);
         const entity = await create.loadEntity(body.id);
         extractExpect(statusCode, body, text, entity);
-        toBeArrayProp(create.checkToBeSameProperties, entity, body);
+        toBeSameArrayProp(create.checkToBeSameProperties, entity, body);
       });
     });
   });

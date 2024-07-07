@@ -3,6 +3,8 @@ const { PRODUCT_TABLE, productSchema } = require('../migrations/20240607044055-c
 const { imageSchema } = require('../migrations/20240704022127-add-image-to-product');
 
 class Product extends Model {
+  static modelName = 'Product';
+
   static associate (models) {
     this.belongsTo(models.Category, { as: 'category' });
   }
@@ -11,7 +13,7 @@ class Product extends Model {
     return {
       sequelize,
       tableName: PRODUCT_TABLE,
-      modelName: 'Product',
+      modelName: this.modelName,
       timestamps: true
     };
   }

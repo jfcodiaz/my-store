@@ -17,8 +17,16 @@ const e2eGenericCrudTest = ({
   read = {
     allowedUsers: []
   },
+  update = {
+    usersCanUpdateAny: []
+  },
   findRandomEntity = async () => {
     return (new EntityRepository()).findRandom();
+  },
+  getParamsForOne = async (entity) => {
+    return {
+      id: entity.id
+    };
   }
 } = {}) => {
   e2e({
@@ -45,7 +53,15 @@ const e2eGenericCrudTest = ({
         suite, entityName, read, users, findRandomEntity
       });
       updateGnericTest({
-        suite, entityName, create, users, findRandomEntity
+        suite,
+        entityEndpoint,
+        entityName,
+        update,
+        users,
+        buildData,
+        findRandomEntity,
+        EntityRepository,
+        getParams: getParamsForOne
       });
     }
   });
