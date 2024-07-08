@@ -2,6 +2,7 @@ const { e2e } = require('../e2e');
 const readGenericTest = require('./crud/read-generic-test');
 const updateGnericTest = require('./crud/update-gneric-test');
 const creteGenericTest = require('./crud/create-generic-test');
+const deleteGenericTest = require('./crud/delete-generi-test');
 
 const e2eGenericCrudTest = ({
   title = 'Generic Crud Test',
@@ -20,10 +21,13 @@ const e2eGenericCrudTest = ({
   update = {
     usersCanUpdateAny: []
   },
+  delete: deleteEntity = {
+    usersCanDeleteAny: []
+  },
   findRandomEntity = async () => {
     return (new EntityRepository()).findRandom();
   },
-  getParamsForOne = async (entity) => {
+  getParamsForOne = (entity) => {
     return {
       id: entity.id
     };
@@ -60,6 +64,13 @@ const e2eGenericCrudTest = ({
         users,
         buildData,
         findRandomEntity,
+        EntityRepository,
+        getParams: getParamsForOne
+      });
+      deleteGenericTest({
+        suite,
+        deleteEntity,
+        entityEndpoint,
         EntityRepository,
         getParams: getParamsForOne
       });

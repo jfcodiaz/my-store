@@ -18,20 +18,16 @@ e2eGenericCrudTest({
     const category = await categoryService.findOneRadom();
     return {
       name: faker.word.adjective(),
-      description: faker.word.words(10),
-      price: parseInt(faker.finance.amount()),
+      description: faker.lorem.words(10),
+      price: parseInt(faker.finance.amount(), 10),
       image: faker.internet.url(),
       categoryId: category.id
     };
   },
   create: {
     allowedUsers: [ADMIN],
-    requireProperties: [
-      'name', 'description', 'price'
-    ],
-    checkToBeSameProperties: [
-      'id', 'name', 'description', 'price'
-    ],
+    requireProperties: ['name', 'description', 'price'],
+    checkToBeSameProperties: ['id', 'name', 'description', 'price'],
     loadEntity: async (id) => {
       return productService.findOne(id);
     }
@@ -39,11 +35,12 @@ e2eGenericCrudTest({
   read: {
     usesCanReadAllPaginated: [ADMIN, CUSTOMER],
     usesCanReadAllAnyOne: [ADMIN, CUSTOMER],
-    checkExistsProperties: [
-      'id', 'name', 'description', 'price'
-    ]
+    checkExistsProperties: ['id', 'name', 'description', 'price']
   },
   update: {
     usersCanUpdateAny: [ADMIN, CUSTOMER]
+  },
+  delete: {
+    usersCanDeleteAny: [ADMIN]
   }
 });

@@ -23,7 +23,7 @@ module.exports = ({
           await getParams(entity),
           await getArgumets(entity)
         )
-        .as('admin');
+        .as(as);
       const { statusCode, body } = await suite.patch({ data });
       const updateEntity = await repostory.findOne(entity.id);
 
