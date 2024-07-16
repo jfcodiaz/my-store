@@ -6,6 +6,7 @@ const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('
 const { config } = require('./config/config');
 const logger = require('./libs/logger');
 const { getBasePathMiddlewares } = require('./services/get-base-path');
+const { initDIContainer, initRoutes } = require('./container');
 
 let app;
 let server;
@@ -18,7 +19,8 @@ const createApp = () => {
   app.use(getBasePathMiddlewares);
   const port = config.port;
   app.use(express.json());
-  routeApi(app);
+  initDIContainer(app);
+  routeApi(app, initRoutes);
   app.get('/', (req, res) => {
     res.send('Hola mi server en express');
   });

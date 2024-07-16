@@ -1,15 +1,14 @@
 const { faker } = require('@faker-js/faker');
-const { ADMIN, CUSTOMER, GUEST } = require('../../utils/users');
-const ProductsService = require('../../../services/product.service');
-const CategoryService = require('../../../services/category.service');
-const e2eGenericCrudTest = require('../../utils/e2e-generic-crud-test');
-
-const productService = new ProductsService();
+const { ADMIN, CUSTOMER, GUEST } = require('../utils/users');
+const CategoryService = require('../../services/category.service');
+const e2eGenericCrudTest = require('../utils/e2e-generic-crud-test');
+const { container } = require('../../container');
+const repository = container.resolve('productRepository');
 const categoryService = new CategoryService();
 
 e2eGenericCrudTest({
   entityName: 'Product',
-  EntityRepository: ProductsService,
+  repository,
   title: '[Product] /api/v1/products',
   entitiesEndpoint: '/api/v1/products',
   entityEndpoint: '/api/v1/products/:id',
@@ -29,7 +28,7 @@ e2eGenericCrudTest({
     requireProperties: ['name', 'description', 'price'],
     checkToBeSameProperties: ['id', 'name', 'description', 'price'],
     loadEntity: async (id) => {
-      return productService.findOne(id);
+      return repository.findOne(id);
     }
   },
   read: {
@@ -38,9 +37,9 @@ e2eGenericCrudTest({
     checkExistsProperties: ['id', 'name', 'description', 'price']
   },
   update: {
-    usersCanUpdateAny: [ADMIN, CUSTOMER]
+    usersCanUpdateAny: [ADMIN]
   },
-  delete: {
+  deleteEntity: {
     usersCanDeleteAny: [ADMIN]
   }
 });

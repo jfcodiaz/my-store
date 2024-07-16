@@ -6,14 +6,14 @@ module.exports = ({
   suite,
   buildData,
   entityEndpoint,
-  EntityRepository,
+  repository,
   update,
   getParams = () => {},
   getArgumets = () => {}
 } = {}) => {
   describe(`[PATCH] / ${entityEndpoint}`, () => {
     updateAnyTest({
-      EntityRepository,
+      repository,
       buildData,
       update,
       suite,

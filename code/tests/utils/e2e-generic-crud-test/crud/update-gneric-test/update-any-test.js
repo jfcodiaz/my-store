@@ -7,16 +7,15 @@ module.exports = ({
   buildData,
   getParams,
   getArgumets,
-  EntityRepository
+  repository
 } = {}) => {
   update.usersCanUpdateAny.forEach(as => {
-    const repostory = new EntityRepository();
-    test(`Update ${repostory.model.modelName} as  ${as}`, async () => {
+    test(`Update ${repository.model.modelName} as  ${as}`, async () => {
       const [entity, data] = await Promise.all([
-        repostory.findRandom(),
+        repository.findRandom(),
         buildData()
       ]);
-      const keys = Object.keys(data);
+      const keys = update.checkShouldBeUpdatedPropeties || Object.keys(data);
       suite
         .setEndpoint(
           'entity',
@@ -25,8 +24,7 @@ module.exports = ({
         )
         .as(as);
       const { statusCode, body } = await suite.patch({ data });
-      const updateEntity = await repostory.findOne(entity.id);
-
+      const updateEntity = await repository.findOne(entity.id);
       expect(statusCode).toBe(200);
       expectToBeNotSameArrayProps(keys, entity, updateEntity);
       expectToBeSameArrayProp(keys, data, body);

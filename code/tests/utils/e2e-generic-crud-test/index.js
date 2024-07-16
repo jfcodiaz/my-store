@@ -6,7 +6,7 @@ const deleteGenericTest = require('./crud/delete-generi-test');
 
 const e2eGenericCrudTest = ({
   title = 'Generic Crud Test',
-  EntityRepository,
+  repository,
   entityName,
   entitiesEndpoint,
   entityEndpoint,
@@ -21,11 +21,11 @@ const e2eGenericCrudTest = ({
   update = {
     usersCanUpdateAny: []
   },
-  delete: deleteEntity = {
+  deleteEntity = {
     usersCanDeleteAny: []
   },
   findRandomEntity = async () => {
-    return (new EntityRepository()).findRandom();
+    return repository.findRandom();
   },
   getParamsForOne = (entity) => {
     return {
@@ -64,14 +64,14 @@ const e2eGenericCrudTest = ({
         users,
         buildData,
         findRandomEntity,
-        EntityRepository,
+        repository,
         getParams: getParamsForOne
       });
       deleteGenericTest({
         suite,
         deleteEntity,
         entityEndpoint,
-        EntityRepository,
+        repository,
         getParams: getParamsForOne
       });
     }
