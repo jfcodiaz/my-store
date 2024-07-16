@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const passport = require('passport');
 
 function checkRoles (...roles) {
   return (req, res, next) => {
@@ -10,5 +11,10 @@ function checkRoles (...roles) {
     }
   };
 }
+const auth = passport.authenticate('jwt', { session: false });
 
-module.exports = { checkRoles };
+module.exports = {
+  checkRoles,
+  onlyAdmin: [auth, checkRoles('admin')],
+  auth
+};

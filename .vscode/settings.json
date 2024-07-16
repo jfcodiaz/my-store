@@ -1,0 +1,9 @@
+{
+    "editor.rulers": [
+        100,
+        120
+    ],
+    "editor.wordWrap": "off",
+    "editor.formatOnSave": false,
+    "editor.formatOnType": true
+}
