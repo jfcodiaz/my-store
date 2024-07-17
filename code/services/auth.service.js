@@ -2,14 +2,12 @@ const bcrypt = require('bcrypt');
 const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const UserService = require('./user.service');
+const userRepository = require('./../container').container.resolve('userRepository');
 const { config } = require('../config/config');
-
-const userService = new UserService();
 
 class AuthService {
   async getUser (email, password) {
-    const user = await userService.findByEmail(email, { scope: 'withPassword' });
+    const user = await userRepository.findByEmail(email, { scope: 'withPassword' });
     if (!user) {
       throw boom.unauthorized();
     }
@@ -18,7 +16,7 @@ class AuthService {
       throw boom.unauthorized();
     }
 
-    return await userService.findByEmail(email);
+    return await userRepository.findByEmail(email);
   }
 
   singToken (user) {
@@ -35,7 +33,7 @@ class AuthService {
   }
 
   async sendRecovery (email) {
-    const user = await userService.findByEmail(email);
+    const user = await userRepository.findByEmail(email);
     if (!user) {
       return;
     }
@@ -43,7 +41,7 @@ class AuthService {
     const playload = { sub: user.id };
     const token = jwt.sign(playload, config.jwtSecret, { expiresIn: '15min' });
     const link = `http://localhost/?token=${token}`;
-    await userService.update(user.id, { recoveryToken: token });
+    await userRepository.update(user.id, { recoveryToken: token });
     const mail = {
       from: config.smtpEmail,
       to: user.email,
@@ -56,16 +54,16 @@ class AuthService {
   async changePassword (token, newPassword) {
     try {
       const payload = jwt.verify(token, config.jwtSecret);
-      let user = await userService.findOne(payload.sub, { scope: 'withPassword' });
+      let user = await userRepository.findOne(payload.sub, { scope: 'withPassword' });
       if (user.recoveryToken !== token) {
         throw boom.unauthorized();
       }
       const hash = await bcrypt.hash(newPassword, config.encryptSalt);
-      await userService.update(user.id, {
+      await userRepository.update(user.id, {
         recoveryToken: null,
         password: hash
       });
-      user = await userService.findOne(payload.sub);
+      user = await userRepository.findOne(payload.sub);
       return this.singToken(user);
     } catch {
       throw boom.unauthorized();

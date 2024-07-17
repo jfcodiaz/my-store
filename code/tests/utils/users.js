@@ -1,8 +1,9 @@
-const UserService = require('../../services/user.service.js');
 const AuthService = require('../../services/auth.service.js');
+const { container } = require('./../../container.js');
+
 const boom = require('@hapi/boom');
 
-const userService = new UserService();
+const userRepository = container.resolve('userRepository');
 const authService = new AuthService();
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
     if (role === this.GUEST) {
       return null;
     }
-    const user = await userService.findFirstUserWithRole(role);
+    const user = await userRepository.findFirstUserWithRole(role);
     if (user === null) {
       throw boom.notFound();
     }
