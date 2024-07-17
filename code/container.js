@@ -9,12 +9,12 @@ const container = require('awilix').createContainer();
 const { asClass, asValue, asFunction } = require('awilix');
 const UserRepository = require('./services/repositories/user.repository');
 const ProductRepository = require('./services/repositories/product.repository');
-const RespositoriesHelpers = require('./services/repositories/common/repositoriesHelpers');
 const sequelize = require('./libs/sequelize');
 container.register({
   // Config
   config: asValue(config),
   sequelize: asValue(sequelize),
+  container: asFunction(() => container).singleton(),
   // Third-party Libraries
   encrypt: asFunction(() => require('bcrypt')).singleton(),
   boom: asFunction(() => require('@hapi/boom')).singleton(),
@@ -24,7 +24,6 @@ container.register({
   productModel: asValue(models.Product),
 
   // Repositories
-  respositoriesHelpers: asClass(RespositoriesHelpers).singleton(),
   userRepository: asClass(UserRepository).singleton(),
   productRepository: asClass(ProductRepository).singleton(),
 

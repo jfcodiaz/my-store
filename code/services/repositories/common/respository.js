@@ -5,12 +5,12 @@ class Repository {
   #getBasePath = null;
   #sequelize = null;
 
-  constructor (model, respositoriesHelpers) {
+  constructor (model, container) {
     this.#model = model;
-    this.#boom = respositoriesHelpers.boom;
-    this.#getAbsoluteUrl = respositoriesHelpers.getAbsoluteUrl;
-    this.#getBasePath = respositoriesHelpers.getBasePath;
-    this.#sequelize = respositoriesHelpers.sequelize;
+    this.#boom = container.resolve('boom');
+    this.#getAbsoluteUrl = container.resolve('getAbsoluteUrl');
+    this.#getBasePath = container.resolve('getBasePath');
+    this.#sequelize = container.resolve('sequelize');
   }
 
   get model () {
