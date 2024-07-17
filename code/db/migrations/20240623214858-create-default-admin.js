@@ -1,19 +1,18 @@
 'use strict';
-const UserService = require('./../../services/user.service');
-
-const userService = new UserService();
+const { container } = require('./../../container');
+const userRepository = container.resolve('userRepository');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up () {
-    await userService.create({
+    await userRepository.create({
       email: 'admin@local.com',
       password: process.env.INITIAL_PASS
     });
   },
 
   async down () {
-    const user = await userService.findByEmail('admin@local.com');
-    if (user) await userService.delete(user.id);
+    const user = await userRepository.findByEmail('admin@local.com');
+    if (user) await userRepository.delete(user.id);
   }
 };

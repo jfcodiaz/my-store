@@ -14,6 +14,23 @@ class UserRepository extends Repository {
       password: hash
     });
   }
+
+  async findByEmail (email, options = { scope: 'defaultScope' }) {
+    const user = await this.model.scope(options.scope).findOne({
+      ...options,
+      where: {
+        email
+      }
+    });
+
+    return user;
+  }
+
+  findFirstUserWithRole (role) {
+    return this.model.findOne({
+      where: { role }
+    });
+  }
 }
 
 module.exports = UserRepository;
