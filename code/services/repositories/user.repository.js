@@ -2,8 +2,8 @@ const Repository = require('./common/respository');
 
 class UserRepository extends Repository {
   #hash = null;
-  constructor ({ userModel, hash, respositoriesHelpers }) {
-    super(userModel, respositoriesHelpers);
+  constructor ({ userModel, hash, container }) {
+    super(userModel, container);
     this.#hash = hash;
   }
 
