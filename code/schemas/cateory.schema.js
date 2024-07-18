@@ -1,21 +1,28 @@
 const Joi = require('joi');
+const validatorHandler = require('../middlewares/validator.handler');
 
 const id = Joi.number().integer();
 
 const image = Joi.string().uri();
 const name = Joi.string().min(3).max(150);
 
-const createCategorySchema = Joi.object({
+const createValidator = Joi.object({
   name: name.required(),
   image: image.required()
 });
 
-const updateCategorySchema = Joi.object({
+const updateValidator = Joi.object({
   name, image
 });
 
-const getCategorySchema = Joi.object({
+const getValidator = Joi.object({
   id: id.required()
 });
 
-module.exports = { createCategorySchema, updateCategorySchema, getCategorySchema };
+const idValidator = validatorHandler(getValidator, 'params');
+
+module.exports = {
+  create: validatorHandler(createValidator, 'body'),
+  update: [validatorHandler(updateValidator, 'body'), idValidator],
+  get: idValidator
+};

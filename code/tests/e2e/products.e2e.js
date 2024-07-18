@@ -1,10 +1,9 @@
 const { faker } = require('@faker-js/faker');
 const { ADMIN, CUSTOMER, GUEST } = require('../utils/users');
-const CategoryService = require('../../services/category.service');
 const e2eGenericCrudTest = require('../utils/e2e-generic-crud-test');
 const { container } = require('../../container');
 const repository = container.resolve('productRepository');
-const categoryService = new CategoryService();
+const categoryRepository = container.resolve('categoryRepository');
 
 e2eGenericCrudTest({
   entityName: 'Product',
@@ -14,7 +13,7 @@ e2eGenericCrudTest({
   entityEndpoint: '/api/v1/products/:id',
   users: [GUEST, CUSTOMER, ADMIN],
   buildData: async () => {
-    const category = await categoryService.findOneRadom();
+    const category = await categoryRepository.findRandom();
     return {
       name: faker.word.adjective(),
       description: faker.lorem.words(10),

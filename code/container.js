@@ -9,6 +9,8 @@ const container = require('awilix').createContainer();
 const { asClass, asValue, asFunction } = require('awilix');
 const UserRepository = require('./services/repositories/user.repository');
 const ProductRepository = require('./services/repositories/product.repository');
+const CategoriesRepository = require('./services/repositories/category.repository');
+
 const sequelize = require('./libs/sequelize');
 container.register({
   // Config
@@ -22,10 +24,12 @@ container.register({
   // Models
   userModel: asValue(models.User),
   productModel: asValue(models.Product),
+  categoryModel: asValue(models.Category),
 
   // Repositories
   userRepository: asClass(UserRepository).singleton(),
   productRepository: asClass(ProductRepository).singleton(),
+  categoryRepository: asClass(CategoriesRepository).singleton(),
 
   // Services
   getBasePath: asFunction(() => require('./services/get-base-path').getBasePath).singleton(),
@@ -73,18 +77,26 @@ container.register({
   destroyEntity: asFunction(() => require('./controllers/common/destroy')).singleton()
 });
 
+// Validators
+container.register({
+  categoryValidators: asFunction(() => require('./schemas/cateory.schema')).singleton()
+});
+
 // Controller Makers
-const UserControllerMaker = require('./controllers/v1/users');
-const ProdcutstControllerMaker = require('./controllers/v1/products');
+const UserControllerFactory = require('./controllers/v1/users');
+const ProdcutstControllerFactory = require('./controllers/v1/products');
+const CategoryControllerFactory = require('./controllers/v1/categories');
 
 container.register({
-  UserControllerMaker: asFunction(UserControllerMaker).singleton(),
-  ProdcutstControllerMaker: asFunction(ProdcutstControllerMaker).singleton()
+  UserControllerFactory: asFunction(UserControllerFactory).singleton(),
+  ProdcutstControllerFactory: asFunction(ProdcutstControllerFactory).singleton(),
+  CategoryControllerFactory: asFunction(CategoryControllerFactory).singleton()
 });
 // RegisterServices
 [
-  'UserControllerMaker',
-  'ProdcutstControllerMaker'
+  'UserControllerFactory',
+  'ProdcutstControllerFactory',
+  'CategoryControllerFactory'
 ].forEach(ctr => container.resolve(ctr));
 
 const setupController = container.resolve('setupController');
