@@ -1,8 +1,8 @@
-const CategoryService = require('./../../../services/category.service');
 const { ADMIN, CUSTOMER } = require('../../utils/users');
-const categoryService = new CategoryService();
 const { faker } = require('@faker-js/faker');
 const { unauthorizedTest, unauthenticatedTest } = require('../common');
+const { container } = require('../../../container');
+const categoryRepository = container.resolve('categoryRepository');
 
 module.exports = suite => {
   describe('[POST] /', () => {
@@ -24,10 +24,10 @@ module.exports = suite => {
         image: 'http://serv.com/img.jpg'
       };
       const { statusCode, body } = await suite.as(ADMIN).post({ data });
-      const category = await categoryService.findOne(body.entity.id);
+      const category = await categoryRepository.findOne(body.id);
 
       expect(statusCode).toBe(201);
-      expect(category.id).toBe(body.entity.id);
+      expect(category.id).toBe(body.id);
       expect(category.name).toBe(data.name);
       expect(category.image).toBe(data.image);
     });

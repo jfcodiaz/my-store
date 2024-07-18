@@ -1,16 +1,16 @@
 const { faker } = require('@faker-js/faker');
+const { container } = require('../../../container');
 const { ADMIN, CUSTOMER } = require('../../utils/users');
-const CategoryService = require('../../../services/category.service');
+const categoryRepository = container.resolve('categoryRepository');
 const { unauthorizedTest, unauthenticatedTest, updateTest } = require('../common');
 
 module.exports = suite => {
   describe('[PATCH] /', () => {
-    const categoryService = new CategoryService();
     let data;
     let entity = {};
 
     beforeAll(async () => {
-      entity = await categoryService.findOneRadom();
+      entity = await categoryRepository.findRandom();
       data = {
         name: `${faker.commerce.department()} ${new Date().getTime()}`,
         image: faker.internet.url()
@@ -27,7 +27,7 @@ module.exports = suite => {
       as: ADMIN,
       data: () => data,
       getEntity: async () => entity,
-      reloadEntity: () => categoryService.findOne(entity.id),
+      reloadEntity: () => categoryRepository.findOne(entity.id),
       expectsEquals: ['name', 'image']
     });
 

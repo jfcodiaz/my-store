@@ -1,14 +1,13 @@
 const { seed } = require('../seed');
 const { faker } = require('@faker-js/faker');
 const { PRODUCT_TABLE } = require('../models/product.model');
-const CategoryService = require('../../services/category.service');
+const { container } = require('../../container');
+const categoryRepository = container.resolve('categoryRepository');
 
 module.exports = seed({
   up: async queryInterface => {
     const products = [];
-
-    const categoryService = new CategoryService();
-    const categories = await categoryService.findAll({ pagination: false });
+    const categories = await categoryRepository.findAll({ pagination: false });
     categories.forEach(category => {
       for (let i = 0; i < 5; i++) {
         products.push({

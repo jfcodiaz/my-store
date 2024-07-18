@@ -2,12 +2,11 @@ const getOneTest = require('../common/get-one');
 const paginationTest = require('../common/pagination');
 const { ADMIN, CUSTOMER } = require('../../utils/users');
 const unauthenticatedTest = require('../common/unauthenticated');
-const CategoryService = require('../../../services/category.service');
+const { container } = require('../../../container');
+const categoryRepository = container.resolve('categoryRepository');
 
 module.exports = async suite => {
   describe('[GET] /', () => {
-    const categoryService = new CategoryService();
-
     paginationTest({
       title: 'Get all with pagination as Admin',
       suite,
@@ -26,7 +25,7 @@ module.exports = async suite => {
       as: ADMIN,
       endpoint: 'category',
       loadEntityFn: async () => {
-        return await categoryService.findOneRadom();
+        return await categoryRepository.findRandom();
       },
       expects: async (entiy, body) => {
         expect(entiy.id).toBe(body.id);
