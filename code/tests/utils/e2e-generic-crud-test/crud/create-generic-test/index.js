@@ -2,9 +2,11 @@ const { GUEST } = require('../../../users');
 const toBeSameArrayProp = require('../../../expects/to-be-same-array-prop');
 const failOnCreateWithoutParamsTest = require('./fail-on-create-without-params');
 const { unauthorizedTest, unauthenticatedTest } = require('../../../../e2e/common');
-
+const { container } = require('./../../../../../container');
+const logger = container.resolve('logger');
 const creteGenericTest = async ({
   suite,
+  debug,
   users,
   create,
   buildData,
@@ -36,6 +38,9 @@ const creteGenericTest = async ({
       test(`Create ${entityName} as ${alloweUser} successfully`, async () => {
         const data = await buildData();
         const { statusCode, body, text } = await suite.as(alloweUser).post({ data });
+        if (debug) {
+          logger.info({ statusCode, body, text });
+        }
         expect(statusCode).toBe(201);
         const entity = await create.loadEntity(body.id);
         extractExpect(statusCode, body, text, entity);

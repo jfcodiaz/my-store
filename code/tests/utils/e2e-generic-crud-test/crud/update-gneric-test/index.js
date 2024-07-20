@@ -3,6 +3,7 @@ const updateAnyTest = require('./update-any-test.js');
 const unauthenticated = require('../../../../e2e/common/unauthenticated');
 
 module.exports = ({
+  debug,
   suite,
   buildData,
   entityEndpoint,
@@ -18,7 +19,8 @@ module.exports = ({
       update,
       suite,
       getParams,
-      getArgumets
+      getArgumets,
+      debug
     });
 
     if (!update.usersCanUpdateAny.includes(GUEST)) {
@@ -26,7 +28,8 @@ module.exports = ({
         suite,
         getParams,
         getArgumets,
-        entityEndpoint
+        entityEndpoint,
+        debug
       });
     }
   });

@@ -10,6 +10,7 @@ module.exports = {
   ADMIN: 'admin',
   CUSTOMER: 'customer',
   GUEST: 'guest',
+  ALL: ['admin', 'custuomer', 'guest'],
   findFirstUserWithRole: async (role) => {
     if (role === this.GUEST) {
       return null;

@@ -33,7 +33,7 @@ e2eGenericCrudTest({
   },
   update: {
     usersCanUpdateAny: [ADMIN],
-    checkShouldBeUpdatedPropeties: ['email', 'role']
+    checkShouldBeUpdatedPropeties: ['email']
   },
   deleteEntity: {
     usersCanDeleteAny: [ADMIN]

@@ -20,15 +20,6 @@ module.exports = {
       });
     }
 
-    for (let i = 0; i < 50; i++) {
-      users.push({
-        password: hash,
-        email: `customer_${i}_${faker.internet.email()}`,
-        role: 'customer',
-        created_at: new Date()
-      });
-    }
-
     return queryInterface.bulkInsert(USER_TABLE, users);
   },
 
