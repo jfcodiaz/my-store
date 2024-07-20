@@ -26,6 +26,14 @@ class UserRepository extends Repository {
     return user;
   }
 
+  findByRole (role) {
+    return this.model.findAll({
+      where: {
+        role
+      }
+    });
+  }
+
   findFirstUserWithRole (role) {
     return this.model.findOne({
       where: { role }

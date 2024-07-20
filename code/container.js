@@ -10,8 +10,15 @@ const { asClass, asValue, asFunction } = require('awilix');
 const UserRepository = require('./services/repositories/user.repository');
 const ProductRepository = require('./services/repositories/product.repository');
 const CategoriesRepository = require('./services/repositories/category.repository');
+const CustomerRepository = require('./services/repositories/customer.respository');
 
 const sequelize = require('./libs/sequelize');
+
+// Rrgister Models
+container.register(Object.entries(models).reduce((acc, [model, value]) => ({
+  ...acc, [`${model.toLowerCase()}Model`]: asValue(value)
+}), {}));
+
 container.register({
   // Config
   config: asValue(config),
@@ -20,16 +27,12 @@ container.register({
   // Third-party Libraries
   encrypt: asFunction(() => require('bcrypt')).singleton(),
   boom: asFunction(() => require('@hapi/boom')).singleton(),
-
-  // Models
-  userModel: asValue(models.User),
-  productModel: asValue(models.Product),
-  categoryModel: asValue(models.Category),
-
+  logger: asFunction(() => require('./libs/logger')).singleton(),
   // Repositories
   userRepository: asClass(UserRepository).singleton(),
   productRepository: asClass(ProductRepository).singleton(),
   categoryRepository: asClass(CategoriesRepository).singleton(),
+  customerRepository: asClass(CustomerRepository).singleton(),
 
   // Services
   getBasePath: asFunction(() => require('./services/get-base-path').getBasePath).singleton(),
@@ -79,24 +82,28 @@ container.register({
 
 // Validators
 container.register({
-  categoryValidators: asFunction(() => require('./schemas/cateory.schema')).singleton()
+  categoryValidators: asFunction(() => require('./schemas/cateory.schema')).singleton(),
+  customerValidators: asFunction(() => require('./schemas/customer.schema')).singleton()
 });
 
 // Controller Makers
 const UserControllerFactory = require('./controllers/v1/users');
 const ProdcutstControllerFactory = require('./controllers/v1/products');
 const CategoryControllerFactory = require('./controllers/v1/categories');
+const CustomerControllerFactory = require('./controllers/v1/customer');
 
 container.register({
   UserControllerFactory: asFunction(UserControllerFactory).singleton(),
   ProdcutstControllerFactory: asFunction(ProdcutstControllerFactory).singleton(),
-  CategoryControllerFactory: asFunction(CategoryControllerFactory).singleton()
+  CategoryControllerFactory: asFunction(CategoryControllerFactory).singleton(),
+  CustumerControllerFactory: asFunction(CustomerControllerFactory).singleton()
 });
 // RegisterServices
 [
   'UserControllerFactory',
   'ProdcutstControllerFactory',
-  'CategoryControllerFactory'
+  'CategoryControllerFactory',
+  'CustumerControllerFactory'
 ].forEach(ctr => container.resolve(ctr));
 
 const setupController = container.resolve('setupController');

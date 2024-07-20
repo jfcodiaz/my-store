@@ -6,6 +6,7 @@ const deleteGenericTest = require('./crud/delete-generi-test');
 
 const e2eGenericCrudTest = ({
   title = 'Generic Crud Test',
+  debug = false,
   repository,
   entityName,
   entitiesEndpoint,
@@ -16,7 +17,8 @@ const e2eGenericCrudTest = ({
     allowedUsers: []
   },
   read = {
-    allowedUsers: []
+    usesCanReadAllPaginated: [],
+    usesCanReadAllAnyOne: []
   },
   update = {
     usersCanUpdateAny: []
@@ -50,14 +52,15 @@ const e2eGenericCrudTest = ({
       suite.setEndpoint('entities');
     },
     tests: (suite) => {
-      creteGenericTest({
-        suite, entityName, users, create, buildData
+      create.allowedUsers.length && creteGenericTest({
+        suite, entityName, users, create, buildData, debug
       });
-      readGenericTest({
+      (read.usesCanReadAllPaginated.length || read.usesCanReadAllAnyOne.length) && readGenericTest({
         suite, entityName, read, users, findRandomEntity
       });
-      updateGnericTest({
+      update.usersCanUpdateAny.length && updateGnericTest({
         suite,
+        debug,
         entityEndpoint,
         entityName,
         update,
@@ -67,7 +70,7 @@ const e2eGenericCrudTest = ({
         repository,
         getParams: getParamsForOne
       });
-      deleteGenericTest({
+      deleteEntity.usersCanDeleteAny.length && deleteGenericTest({
         suite,
         deleteEntity,
         entityEndpoint,

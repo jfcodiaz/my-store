@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const validatorHandler = require('../middlewares/validator.handler');
 
 const id = Joi.number().integer();
 
@@ -28,6 +29,10 @@ const updateCustomerSchema = Joi.object({
   name, lastName, phone, userId
 });
 
+const idValidator = validatorHandler(getCustomerSchema, 'params');
+
 module.exports = {
-  getCustomerSchema, createCustomerSchema, updateCustomerSchema
+  create: validatorHandler(createCustomerSchema, 'body'),
+  update: [validatorHandler(updateCustomerSchema, 'body'), idValidator],
+  get: idValidator
 };
