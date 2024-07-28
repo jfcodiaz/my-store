@@ -1,10 +1,18 @@
-const Repository = require('./common/respository');
+const Repository = require('./common/repository');
 
 class CustomerRepository extends Repository {
   #hash = null;
   constructor ({ customerModel, hash, container }) {
     super(customerModel, container);
     this.#hash = hash;
+  }
+
+  findByUserId (userId) {
+    return this.model.findOne({
+      where: {
+        userId
+      }
+    });
   }
 
   async create (data) {

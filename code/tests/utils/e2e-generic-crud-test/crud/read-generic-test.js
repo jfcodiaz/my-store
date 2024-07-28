@@ -1,20 +1,32 @@
 const { paginationTest, unauthenticatedTest, getOneTest } = require('../../../e2e/common');
 const pluralize = require('pluralize');
 const { GUEST } = require('../../users');
+const { resetSeed } = require('../../umzug');
+
+const getTotalAllEntitesGeneric = (repository) => {
+  return () => repository.getTotal();
+};
 
 const readGenericTest = async ({
   entityName,
+  repository,
   suite,
   read,
   users,
-  findRandomEntity
+  findRandomEntity,
+  getTotalAllEntities = null
 } = {}) => {
   describe('[GET] /', () => {
+    beforeAll(async () => {
+      await resetSeed();
+    });
     read.usesCanReadAllPaginated.forEach(allowedUser => {
       paginationTest({
         title: `Get all ${pluralize(entityName)} with pagination as ${allowedUser}`,
         suite,
-        as: allowedUser
+        as: allowedUser,
+        getExpectedTotal: getTotalAllEntities || getTotalAllEntitesGeneric(repository)
+
       });
     });
 

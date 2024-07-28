@@ -4,6 +4,7 @@ class Repository {
   #getAbsoluteUrl = null;
   #getBasePath = null;
   #sequelize = null;
+  #container = null;
 
   constructor (model, container) {
     this.#model = model;
@@ -11,10 +12,15 @@ class Repository {
     this.#getAbsoluteUrl = container.resolve('getAbsoluteUrl');
     this.#getBasePath = container.resolve('getBasePath');
     this.#sequelize = container.resolve('sequelize');
+    this.#container = container;
   }
 
   get model () {
     return this.#model;
+  }
+
+  get container () {
+    return this.#container;
   }
 
   async create (data) {
@@ -89,6 +95,10 @@ class Repository {
     await entity.destroy();
 
     return { id };
+  }
+
+  getTotal () {
+    return this.#model.count();
   }
 }
 

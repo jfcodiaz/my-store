@@ -4,7 +4,7 @@ const logger = require('../../libs/logger');
 const buildRoute = require('../../utils/buildRoute');
 const { upSeed, downSeed } = require('../utils/umzug');
 const { createApp, getApp, getServer } = require('./../../app');
-const { findFirstUserWithRole, ADMIN, CUSTOMER } = require('./users');
+const { findFirstUserWithRole, ADMIN, CUSTOMER, CUSTOMER_USER_ID, CUSTOMER_2_USER_ID, CUSTOMER_2, findUserById } = require('./users');
 
 const e2e = async ({
   title = 'Suite',
@@ -17,7 +17,8 @@ const e2e = async ({
   describe(title, () => {
     const suite = new SuiteE2E({
       [ADMIN]: async () => await findFirstUserWithRole(ADMIN),
-      [CUSTOMER]: async () => await findFirstUserWithRole(CUSTOMER)
+      [CUSTOMER]: async () => await findUserById(CUSTOMER_USER_ID),
+      [CUSTOMER_2]: async () => await findUserById(CUSTOMER_2_USER_ID)
     },
     buildRoute
     );
