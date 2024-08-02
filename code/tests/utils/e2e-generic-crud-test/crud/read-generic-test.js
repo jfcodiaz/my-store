@@ -20,6 +20,35 @@ const readGenericTest = async ({
     beforeAll(async () => {
       await resetSeed();
     });
+
+    if (read.usersOnlyCanReadOwnEntities) {
+      const alias = read.usersOnlyCanReadOwnEntities;
+      const title = `Users (${alias.join(', ')}) should only read their ${pluralize(repository.model.name)}`;
+      test(title, async () => {
+        const data = {};
+        const promises = read.usersOnlyCanReadOwnEntities.map(async (alias) => {
+          const user = await suite.loadUser(alias);
+          const entities = await repository.getByUser(user.user.id);
+          data[alias] = {
+            user,
+            entities
+          };
+        });
+        await Promise.all(promises);
+        const response = read.usersOnlyCanReadOwnEntities.map(async (alias) => {
+          suite.setEndpoint('entities');
+          suite.as(alias);
+          const { body, text, codeStatus } = await suite.get();
+          data[alias].response = { body, text, codeStatus };
+        });
+        await Promise.all(response);
+        Object.values(data).forEach(data => {
+          const { entities, response } = data;
+          expect(response.body.total).toBe(entities.length);
+        });
+      });
+    }
+
     read.usesCanReadAllPaginated.forEach(allowedUser => {
       paginationTest({
         title: `Get all ${pluralize(entityName)} with pagination as ${allowedUser}`,

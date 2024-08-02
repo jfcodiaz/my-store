@@ -27,7 +27,8 @@ e2eGenericCrudTest({
     usesCanReadAllPaginated: [ADMIN],
     usesCanReadAllAnyOne: [ADMIN],
     checkExistsProperties: ['id', 'email', 'role'],
-    ownEntitiesReadOnlyUsers: [CUSTOMER]
+    ownEntitiesReadOnlyUsers: [CUSTOMER],
+    usersOnlyCanReadOwnEntities: [CUSTOMER, CUSTOMER_2]
   },
   deleteEntity: {
     usersCanDeleteAny: [ADMIN],

@@ -1,4 +1,4 @@
-const { onlyAdmin, onlyCustomer, auth } = require('../../middlewares/auth.handler');
+const { onlyCustomer, auth } = require('../../middlewares/auth.handler');
 
 module.exports = ({
   createEntity,
@@ -21,8 +21,18 @@ module.exports = ({
       next(error);
     }
   }],
-  ['readAll', 'get', '/', ...onlyAdmin, readAllEntity(orderRepository)],
-  ['readOne', 'get', '/:id', ...onlyAdmin, readOneEntity(orderRepository)],
+  ['readAll', 'get', '/', auth, async (req, res, next) => {
+    try {
+      if (req.user.role !== 'admin') {
+        res.json(await orderRepository.getByUserPaginated(req.user.sub));
+        return;
+      }
+      readAllEntity(orderRepository)(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  }],
+  ['readOne', 'get', '/:id', auth, readOneEntity(orderRepository)],
   ['destroy', 'delete', '/:id', auth, async (req, res, next) => {
     const order = await orderRepository.findOne(req.params.id);
     const customer = await customerRepository.findByUserId(req.user.sub);
