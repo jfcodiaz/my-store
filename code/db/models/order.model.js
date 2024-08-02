@@ -8,7 +8,8 @@ const orderSchema = {
 class Order extends Model {
   static associate (models) {
     this.belongsTo(models.Customer, {
-      as: 'customer'
+      as: 'customer',
+      onDelete: 'CASCADE'
     });
     this.belongsToMany(models.Product, {
       as: 'products',

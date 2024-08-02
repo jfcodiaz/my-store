@@ -16,5 +16,6 @@ const auth = passport.authenticate('jwt', { session: false });
 module.exports = {
   checkRoles,
   onlyAdmin: [auth, checkRoles('admin')],
+  onlyCustomer: [auth, checkRoles('customer')],
   auth
 };

@@ -1,20 +1,22 @@
 class Repository {
-  #model = null;
   #boom = null;
-  #getAbsoluteUrl = null;
-  #getBasePath = null;
+  #model = null;
   #sequelize = null;
+  #container = null;
 
   constructor (model, container) {
     this.#model = model;
     this.#boom = container.resolve('boom');
-    this.#getAbsoluteUrl = container.resolve('getAbsoluteUrl');
-    this.#getBasePath = container.resolve('getBasePath');
     this.#sequelize = container.resolve('sequelize');
+    this.#container = container;
   }
 
   get model () {
     return this.#model;
+  }
+
+  get container () {
+    return this.#container;
   }
 
   async create (data) {
@@ -43,31 +45,17 @@ class Repository {
       return this.#model.findAll();
     }
 
-    const entities = await this.#model.findAndCountAll({
-      limit: perPage,
-      offset
+    const paginate = this.container.resolve('paginate');
+    return paginate({
+      offset,
+      perPage,
+      currentPage: page,
+      getEntities: () => this.#model.findAndCountAll({
+        limit: perPage,
+        offset,
+        absoluteUrl
+      })
     });
-
-    const totalPage = Math.ceil(entities.count / perPage);
-    const basePath = absoluteUrl ? this.#getAbsoluteUrl() : this.#getBasePath();
-    const totalPages = Math.ceil(entities.count / perPage);
-    const queryParams = `?per_page=${perPage}`;
-    const currentPage = parseInt(page);
-
-    return {
-      total: entities.count,
-      per_page: parseInt(perPage),
-      current_page: parseInt(currentPage),
-      last_page: totalPage,
-      first_page_url: `${basePath}${queryParams}&page=1`,
-      last_page_url: `${basePath}${queryParams}&page=${totalPages}`,
-      next_page_url: currentPage < totalPages ? `${basePath}${queryParams}&page=${currentPage + 1}` : null,
-      prev_page_url: currentPage > 1 ? `${basePath}${queryParams}&page=${currentPage - 1}` : null,
-      path: basePath,
-      from: offset + 1,
-      to: offset + entities.rows.length,
-      data: entities.rows
-    };
   };
 
   findRandom () {
@@ -89,6 +77,10 @@ class Repository {
     await entity.destroy();
 
     return { id };
+  }
+
+  getTotal () {
+    return this.#model.count();
   }
 }
 
