@@ -15,6 +15,7 @@ const CustomerRepository = require('./services/repositories/customer.respository
 const OrderRepository = require('./services/repositories/order.repository');
 const paginate = require('./services/paginate');
 const sequelize = require('./libs/sequelize');
+const verifyOwnerOrRole = require('./middlewares/verify-owner-or-role');
 
 // Rrgister Models
 container.register(Object.entries(models).reduce((acc, [model, value]) => ({
@@ -39,8 +40,8 @@ container.register({
   // Services
   getBasePath: asFunction(() => require('./services/get-base-path').getBasePath).singleton(),
   getAbsoluteUrl: asFunction(() => require('./services/get-base-path').getAbsoluteUrl).singleton(),
-  paginate: asFunction(paginate).singleton()
-
+  paginate: asFunction(paginate).singleton(),
+  verifyOwnerOrRole: asFunction(verifyOwnerOrRole).singleton()
 });
 
 // Fn Services whit dependeces:

@@ -19,7 +19,7 @@ const sing = async (user) => {
 module.exports = {
   ADMIN: 'admin',
   CUSTOMER: 'customer',
-  CUSTOMER_2: 'cusomter2',
+  CUSTOMER_2: 'customer_2',
   GUEST: 'guest',
   ALL: ['admin', 'customer', 'cusomter2', 'guest'],
   CUSTOMER_USER_ID: 5,

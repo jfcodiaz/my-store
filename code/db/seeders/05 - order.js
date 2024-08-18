@@ -11,7 +11,7 @@ module.exports = seed({
     const updatedAt = new Date();
     const orders = [];
     customers.forEach(customer => {
-      for (let i = 0; i < faker.number.int(50); i++) {
+      for (let i = 0; i < faker.number.int(5, 50); i++) {
         orders.push({
           customer_id: customer.id,
           created_at: createdAt,

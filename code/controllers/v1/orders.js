@@ -1,14 +1,13 @@
 const { onlyCustomer, auth } = require('../../middlewares/auth.handler');
 
 module.exports = ({
-  createEntity,
-  readOneEntity,
   readAllEntity,
-  updateEntity,
   destroyEntity,
   orderRepository,
   customerRepository,
   addController,
+  verifyOwnerOrRole,
+  readOneEntity,
   boom
 }) => addController('orders', 'v1', [
   ['create', 'post', '/', ...onlyCustomer, async (req, res, next) => {
@@ -32,7 +31,17 @@ module.exports = ({
       next(error);
     }
   }],
-  ['readOne', 'get', '/:id', auth, readOneEntity(orderRepository)],
+  ['readOne', 'get', '/:id', auth,
+    verifyOwnerOrRole({
+      repository: orderRepository,
+      roles: ['admin'],
+      verifyProperty: async (entity, user) => {
+        const costumer = await customerRepository.findByUserId(user.id);
+        return entity.costumer_id === costumer.id;
+      }
+    }),
+    readOneEntity(orderRepository)
+  ],
   ['destroy', 'delete', '/:id', auth, async (req, res, next) => {
     const order = await orderRepository.findOne(req.params.id);
     const customer = await customerRepository.findByUserId(req.user.sub);
