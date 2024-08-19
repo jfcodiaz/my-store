@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  app: 
+    build:
+      context: .
+      dockerfile: ./docker/environments/dev/node/Dockerfile
+      target: production
+    container_name: ${POJECT}_prd
+    hostname: ${PROJECT_PREFIX}-node-production
+    working_dir: /app/code
+    env_file:
+      - code/.env.production
+    ports:
+      - ${PROD_APP_PORT}:3000
+      - ${PROD_POSTGRES_PORT}:5432

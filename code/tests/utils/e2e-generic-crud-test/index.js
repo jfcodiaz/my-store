@@ -18,7 +18,9 @@ const e2eGenericCrudTest = ({
   },
   read = {
     usesCanReadAllPaginated: [],
-    usesCanReadAllAnyOne: []
+    usesCanReadAllAnyOne: [],
+    ownEntitiesReadOnlyUsers: null,
+    checkUserEntityOwnership: null
   },
   update = {
     usersCanUpdateAny: []
@@ -56,7 +58,7 @@ const e2eGenericCrudTest = ({
         suite, entityName, users, create, buildData, debug
       });
       (read.usesCanReadAllPaginated.length || read.usesCanReadAllAnyOne.length) && readGenericTest({
-        suite, entityName, read, users, findRandomEntity
+        suite, entityName, read, users, findRandomEntity, repository
       });
       update.usersCanUpdateAny.length && updateGnericTest({
         suite,

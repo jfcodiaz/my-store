@@ -12,7 +12,6 @@ if (fs.existsSync(`${envFile}`)) {
 dontenv.config(options);
 
 const dbUrl = process.env.DATABASE_URL || `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
-
 const config = {
   appPort: process.env.PORT || 3000,
   env: process.env.NODE_ENV || 'dev',
@@ -29,7 +28,9 @@ const config = {
   smtpEmail: process.env.SMTP_EMAIL,
   smtpPassword: process.env.SMTP_PASSWORD,
   smtpPort: process.env.SMTP_PORT,
-  smtpSecure: process.env.SMTP_SECURE === 'true'
+  smtpSecure: process.env.SMTP_SECURE === 'true',
+  loggingEnabled: process.env.LOGGING_ENABLED === 'true',
+  logger: process.env.LOGGER
 };
 
 module.exports = { config };

@@ -1,0 +1,11 @@
+code/node_modules
+code/.git
+code/.DS_Store
+code/.editorconfig
+code/.sonar
+code/.test-report.xml
+code/.env
+code/.env.*
+code/.scannerwork
+code/.sequelize
+code/sonar

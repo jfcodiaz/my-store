@@ -1,4 +1,4 @@
-const Repository = require('./common/respository');
+const Repository = require('./common/repository');
 
 class UserRepository extends Repository {
   #hash = null;

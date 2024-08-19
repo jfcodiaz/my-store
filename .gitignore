@@ -1,6 +1,9 @@
 node_modules
 .env
 .env.e2e
+.env.production
+
 code/tests/coverage/*
 code/test-report.xml
 !code/tests/coverage/.gitkeep
+.scannerwork

@@ -2,7 +2,8 @@ version: '3.3'
 
 services:
   node: 
-    image: node:20
+    build:
+      context:  ./docker/environments/dev/node
     volumes:
       - ./:/app
     container_name: ${POJECT}_node
@@ -14,9 +15,27 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT}
       - DB_HOST=postgres
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_LOGIN=${SONAR_LOGIN}
+      - SONAR_PASSWORD=${SONAR_PASSWORD}
+      - SONAR_PROJECT_TOKEN=${SONAR_PROJECT_TOKEN}
+      - SONAR_PROJECT_KEY=${SONAR_PROJECT_KEY}
     ports:
       - ${APP_PORT}:3000
 
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+  
   postgres:
     image: postgres:13
     container_name: ${POJECT}_postgres
@@ -53,3 +72,7 @@ services:
 volumes:
   postgres_data:
   pgadmin_data:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:

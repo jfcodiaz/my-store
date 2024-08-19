@@ -4,6 +4,7 @@ const failOnCreateWithoutParamsTest = require('./fail-on-create-without-params')
 const { unauthorizedTest, unauthenticatedTest } = require('../../../../e2e/common');
 const { container } = require('./../../../../../container');
 const logger = container.resolve('logger');
+
 const creteGenericTest = async ({
   suite,
   debug,
@@ -31,7 +32,7 @@ const creteGenericTest = async ({
         });
       });
 
-    failOnCreateWithoutParamsTest(entityName, suite, create);
+    failOnCreateWithoutParamsTest(entityName, suite, create, debug);
 
     // Create entity as allowed users
     create.allowedUsers.forEach(async alloweUser => {
